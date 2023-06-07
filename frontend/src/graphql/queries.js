@@ -5,12 +5,14 @@ export const getPortfolio = /* GraphQL */ `
   query GetPortfolio($id: ID!) {
     getPortfolio(id: $id) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
-      createdAt
+      bankTransferIds
       updatedAt
     }
   }
@@ -24,11 +26,42 @@ export const listPortfolios = /* GraphQL */ `
     listPortfolios(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        createdAt
         securityIds
+        startingCapital
         capital
         profit
         goalIds
         watchlistIds
+        bankTransferIds
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getBankTransfer = /* GraphQL */ `
+  query GetBankTransfer($id: ID!) {
+    getBankTransfer(id: $id) {
+      id
+      type
+      amount
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listBankTransfers = /* GraphQL */ `
+  query ListBankTransfers(
+    $filter: ModelBankTransferFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBankTransfers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        amount
         createdAt
         updatedAt
       }

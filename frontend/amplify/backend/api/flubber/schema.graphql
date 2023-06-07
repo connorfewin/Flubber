@@ -4,11 +4,19 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type Portfolio @model {
   id: ID!
+  createdAt: String!
   securityIds: [String]
-  capital: Float!
-  profit: Float!
+  startingCapital: Float!
+  capital: Float
+  profit: Float
   goalIds: [String]
   watchlistIds: [String]
+  bankTransferIds: [String]
+}
+type BankTransfer @model {
+  id: ID!
+  type: String!
+  amount: Float!
 }
 
 type Watchlist @model {

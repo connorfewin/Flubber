@@ -8,12 +8,14 @@ export const createPortfolio = /* GraphQL */ `
   ) {
     createPortfolio(input: $input, condition: $condition) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
-      createdAt
+      bankTransferIds
       updatedAt
     }
   }
@@ -25,12 +27,14 @@ export const updatePortfolio = /* GraphQL */ `
   ) {
     updatePortfolio(input: $input, condition: $condition) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
-      createdAt
+      bankTransferIds
       updatedAt
     }
   }
@@ -42,11 +46,55 @@ export const deletePortfolio = /* GraphQL */ `
   ) {
     deletePortfolio(input: $input, condition: $condition) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
+      bankTransferIds
+      updatedAt
+    }
+  }
+`;
+export const createBankTransfer = /* GraphQL */ `
+  mutation CreateBankTransfer(
+    $input: CreateBankTransferInput!
+    $condition: ModelBankTransferConditionInput
+  ) {
+    createBankTransfer(input: $input, condition: $condition) {
+      id
+      type
+      amount
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateBankTransfer = /* GraphQL */ `
+  mutation UpdateBankTransfer(
+    $input: UpdateBankTransferInput!
+    $condition: ModelBankTransferConditionInput
+  ) {
+    updateBankTransfer(input: $input, condition: $condition) {
+      id
+      type
+      amount
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteBankTransfer = /* GraphQL */ `
+  mutation DeleteBankTransfer(
+    $input: DeleteBankTransferInput!
+    $condition: ModelBankTransferConditionInput
+  ) {
+    deleteBankTransfer(input: $input, condition: $condition) {
+      id
+      type
+      amount
       createdAt
       updatedAt
     }

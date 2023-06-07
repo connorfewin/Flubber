@@ -7,12 +7,14 @@ export const onCreatePortfolio = /* GraphQL */ `
   ) {
     onCreatePortfolio(filter: $filter) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
-      createdAt
+      bankTransferIds
       updatedAt
     }
   }
@@ -23,12 +25,14 @@ export const onUpdatePortfolio = /* GraphQL */ `
   ) {
     onUpdatePortfolio(filter: $filter) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
-      createdAt
+      bankTransferIds
       updatedAt
     }
   }
@@ -39,11 +43,52 @@ export const onDeletePortfolio = /* GraphQL */ `
   ) {
     onDeletePortfolio(filter: $filter) {
       id
+      createdAt
       securityIds
+      startingCapital
       capital
       profit
       goalIds
       watchlistIds
+      bankTransferIds
+      updatedAt
+    }
+  }
+`;
+export const onCreateBankTransfer = /* GraphQL */ `
+  subscription OnCreateBankTransfer(
+    $filter: ModelSubscriptionBankTransferFilterInput
+  ) {
+    onCreateBankTransfer(filter: $filter) {
+      id
+      type
+      amount
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateBankTransfer = /* GraphQL */ `
+  subscription OnUpdateBankTransfer(
+    $filter: ModelSubscriptionBankTransferFilterInput
+  ) {
+    onUpdateBankTransfer(filter: $filter) {
+      id
+      type
+      amount
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteBankTransfer = /* GraphQL */ `
+  subscription OnDeleteBankTransfer(
+    $filter: ModelSubscriptionBankTransferFilterInput
+  ) {
+    onDeleteBankTransfer(filter: $filter) {
+      id
+      type
+      amount
       createdAt
       updatedAt
     }
