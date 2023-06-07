@@ -10,6 +10,11 @@
       "StackName": "amplify-flubber-dev-112013",
       "StackId": "arn:aws:cloudformation:us-east-1:102886707685:stack/amplify-flubber-dev-112013/ce6a32e0-0546-11ee-864a-12cfb1abe0af",
       "AmplifyAppId": "d5a7qm77m5mpq"
+    },
+    "categories": {
+      "api": {
+        "flubber": {}
+      }
     }
   }
 }
