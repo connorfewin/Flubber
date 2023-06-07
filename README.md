@@ -12,3 +12,8 @@ this seems like a risk," but idk how much of a risk. We can solve this issue.
 
 The goal:
 - To increase the annual growth of my stock portfolio by better understanding the impact of each one of my trades.
+
+Some thoughts:
+- Doesnt have to be connected to tda or alpaca. This would make it easier to use, but can be down without it.
+    - Just required more work from the user
+ 
