@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { listPortfolios, listSecurities } from './graphql/queries';
+import { getSecurity, listPortfolios, listSecurities, listWatchlists } from './graphql/queries';
 import { createGoal, createPortfolio, createWatchlist, createSecurity } from './graphql/mutations';
 
 const fetchPortfolio = async () => {
@@ -9,6 +9,33 @@ const fetchPortfolio = async () => {
       console.log("Successfully fetched portfolio: ", portfolio);
       return portfolio;
     } catch (error) {console.log("error in fetchAllUsers: " + error)}
+}
+
+const fetchWatchlistsAPI = async (portfolioId) => {
+  try {
+    const watchlistsResponse = await API.graphql(
+      graphqlOperation(listWatchlists, {
+        filter: {
+          portfolioId: { eq: portfolioId },
+        },
+      })
+    );
+    const watchlist = watchlistsResponse["data"]["listWatchlists"]["items"];
+    console.log("Successfully fetched watchlists: ", watchlist);
+    return watchlist;
+  } catch (error) {console.log("error in fetchWatchlistsAPI: ", error)}
+}
+
+const fetchManySecuritiesAPI = async (securityIds) => {
+  try {
+    const securities = []
+    for(const id of securityIds) {
+      const security = await API.graphql(graphqlOperation(getSecurity, { id: id }));
+      securities.push(security.data.getSecurity);
+    } 
+    console.log("Successfully fetched watchlist's securities: ", securities);
+    return securities;
+  } catch (error) {console.log("error in fetchManySecuritiesAPI: ", error)}
 }
 
 const createPortfolioAPI = async (startingCapital, createdAt) => {
@@ -105,9 +132,10 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
-
 export {
     fetchPortfolio,
+    fetchWatchlistsAPI,
+    fetchManySecuritiesAPI,
     createPortfolioAPI,
     createGoalAPI,  
     createWatchlistAPI  
