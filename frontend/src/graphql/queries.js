@@ -102,6 +102,7 @@ export const getGoal = /* GraphQL */ `
   query GetGoal($id: ID!) {
     getGoal(id: $id) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
@@ -120,6 +121,7 @@ export const listGoals = /* GraphQL */ `
     listGoals(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        portfolioId
         isOpen
         createdAt
         initialPortfolioValue

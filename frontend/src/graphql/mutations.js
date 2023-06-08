@@ -149,6 +149,7 @@ export const createGoal = /* GraphQL */ `
   ) {
     createGoal(input: $input, condition: $condition) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
@@ -165,6 +166,7 @@ export const updateGoal = /* GraphQL */ `
   ) {
     updateGoal(input: $input, condition: $condition) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
@@ -181,6 +183,7 @@ export const deleteGoal = /* GraphQL */ `
   ) {
     deleteGoal(input: $input, condition: $condition) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue

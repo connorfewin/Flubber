@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPortfolioAPI } from "../api";
+import DateInput from "./DateInnput";
 
 const NewPortfolio = () => {
     const [date, setDate] = useState('');
@@ -22,15 +23,8 @@ const NewPortfolio = () => {
         <div className="NewPortfolio">
             <h2>New Portfolio</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="date">Date:</label>
-                <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={date}
-                    onChange={(event) => setDate(event.target.value)}
-                />
-                <div>
+                <DateInput date={date} setDate={setDate} />
+                <div className="initial_investment">
                     <label htmlFor="capital">Initial Investment:</label>
                     <input
                     type="text"

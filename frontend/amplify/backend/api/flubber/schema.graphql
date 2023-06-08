@@ -27,6 +27,7 @@ type Watchlist @model {
 
 type Goal @model {
   id: ID!
+  portfolioId: String!
   isOpen: Boolean!
   createdAt: String!
   initialPortfolioValue: Float!

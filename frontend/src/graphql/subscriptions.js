@@ -137,6 +137,7 @@ export const onCreateGoal = /* GraphQL */ `
   subscription OnCreateGoal($filter: ModelSubscriptionGoalFilterInput) {
     onCreateGoal(filter: $filter) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
@@ -150,6 +151,7 @@ export const onUpdateGoal = /* GraphQL */ `
   subscription OnUpdateGoal($filter: ModelSubscriptionGoalFilterInput) {
     onUpdateGoal(filter: $filter) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
@@ -163,6 +165,7 @@ export const onDeleteGoal = /* GraphQL */ `
   subscription OnDeleteGoal($filter: ModelSubscriptionGoalFilterInput) {
     onDeleteGoal(filter: $filter) {
       id
+      portfolioId
       isOpen
       createdAt
       initialPortfolioValue
