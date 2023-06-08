@@ -1,0 +1,61 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Portfolio @model {
+  id: ID!
+  createdAt: String!
+  securityIds: [String]
+  startingCapital: Float!
+  capital: Float
+  profit: Float
+}
+type BankTransfer @model {
+  id: ID!
+  portfolioId: String!
+  type: String!
+  amount: Float!
+}
+
+type Watchlist @model {
+  id: ID!
+  portfolioId: String!
+  name: String!
+  securityIds: [String]
+}
+
+type Goal @model {
+  id: ID!
+  portfolioId: String!
+  isOpen: Boolean!
+  createdAt: String!
+  initialPortfolioValue: Float!
+  growthGoal: Float!
+  endDate: String
+}
+
+type Security @model {
+  id: ID!
+  symbol: String!
+  portfolioId: String!
+  portfolioAllocation: Float
+  profitAllocation: Float
+  currentPrice: Float
+}
+
+type Trade @model {
+  id: ID!
+  securityId: String!
+  goalId: String
+  isOpen: Boolean!
+  moneyInvested: Float
+}
+
+type Share @model {
+  id: ID!
+  createdAt: String
+  tradeId: String
+  type: String!
+  entryPrice: Float!
+  exitPrice: Float
+}

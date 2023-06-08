@@ -105,8 +105,6 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
-  
-
 
 export {
     fetchPortfolio,
