@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPortfolio, fetchWatchlistsAPI, fetchManySecuritiesAPI } from "../api";
-import { API, graphqlOperation } from 'aws-amplify';
+import {
+  fetchPortfolio,
+  fetchWatchlistsAPI,
+  fetchManySecuritiesAPI,
+} from "../api";
+import { API, graphqlOperation } from "aws-amplify";
 import { onUpdateSecurity } from "../graphql/subscriptions";
-import '../Styles/Watchlist.css'
+import "../Styles/Watchlist.css";
 
 const DisplayWatchlist = () => {
   const navigate = useNavigate();
@@ -18,15 +22,19 @@ const DisplayWatchlist = () => {
       setPortfolio(portfolioResponse);
       const watchlistResponse = await fetchWatchlistsAPI(portfolio.id);
       setWatchlist(watchlistResponse);
-      setSelectedWatchlist(watchlistResponse.length === 1 ? watchlistResponse[0] : null);
+      setSelectedWatchlist(
+        watchlistResponse.length === 1 ? watchlistResponse[0] : null
+      );
     };
-  
+
     fetchWatchlists();
   }, [portfolio.id]);
   useEffect(() => {
     const fetchSecurities = async () => {
       if (selectedWatchlist && selectedWatchlist.securityIds.length > 0) {
-        const securitiesResponse = await fetchManySecuritiesAPI(selectedWatchlist.securityIds);
+        const securitiesResponse = await fetchManySecuritiesAPI(
+          selectedWatchlist.securityIds
+        );
         setSecurities(securitiesResponse);
       }
     };
@@ -35,13 +43,15 @@ const DisplayWatchlist = () => {
   }, [selectedWatchlist]);
 
   // Subscription to listen for updated securities
-useEffect(() => {
-    const subscription = API.graphql(graphqlOperation(onUpdateSecurity)).subscribe({
+  useEffect(() => {
+    const subscription = API.graphql(
+      graphqlOperation(onUpdateSecurity)
+    ).subscribe({
       next: (eventData) => {
         // Handle the updated security received through the subscription
         const updatedSecurity = eventData.value.data.onUpdateSecurity;
-        setSecurities(prevSecurities => {
-          const updatedSecurities = prevSecurities.map(security => {
+        setSecurities((prevSecurities) => {
+          const updatedSecurities = prevSecurities.map((security) => {
             if (security.id === updatedSecurity.id) {
               return updatedSecurity;
             }
@@ -51,25 +61,26 @@ useEffect(() => {
         });
       },
       error: (error) => {
-        console.error('Subscription error:', error);
-      }
+        console.error("Subscription error:", error);
+      },
     });
-  
+
     // Unsubscribe the subscription when the component unmounts
     return () => {
       subscription.unsubscribe();
     };
   }, []);
-  
 
   const handleWatchlistChange = (event) => {
     const selectedWatchlistId = event.target.value;
-    const selectedWatchlist = watchlist.find((item) => item.id === selectedWatchlistId);
+    const selectedWatchlist = watchlist.find(
+      (item) => item.id === selectedWatchlistId
+    );
     setSelectedWatchlist(selectedWatchlist);
   };
 
   const handleNewWatchlist = () => {
-    navigate('/new-watchlist');
+    navigate("/new-watchlist");
   };
 
   return (
@@ -107,7 +118,7 @@ useEffect(() => {
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 export default DisplayWatchlist;
