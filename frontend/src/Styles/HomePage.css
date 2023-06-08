@@ -1,0 +1,13 @@
+
+/* HomePage.css */
+
+body {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .root-container {
+    padding: 20px; /* Add desired padding value */
+  }
+  

@@ -1,10 +1,8 @@
-import './App.css';
-import NewGoal from './Components/NewGoal';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 import config from './aws-exports';
+import HomePage from './Pages/Home';
 import NewWatchlist from './Components/NewWatchlist';
-import DisplayWatchlist from './Components/DisplayWatchlist';
 
 Amplify.configure(config);
 
@@ -12,7 +10,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<DisplayWatchlist />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/new-watchlist" element={<NewWatchlist />} />
       </Routes>
     </Router>
   );

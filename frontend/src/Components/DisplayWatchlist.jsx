@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchPortfolio, fetchWatchlistsAPI, fetchManySecuritiesAPI } from "../api";
 import { API, graphqlOperation } from 'aws-amplify';
 import { onUpdateSecurity } from "../graphql/subscriptions";
+import '../Styles/Watchlist.css'
 
 const DisplayWatchlist = () => {
+  const navigate = useNavigate();
   const [portfolio, setPortfolio] = useState("");
   const [watchlist, setWatchlist] = useState([]);
   const [securities, setSecurities] = useState([]);
@@ -65,31 +68,42 @@ useEffect(() => {
     setSelectedWatchlist(selectedWatchlist);
   };
 
+  const handleNewWatchlist = () => {
+    navigate('/new-watchlist');
+  };
+
   return (
     <div className="watchlist-container">
-      {watchlist.length > 1 ? (
-        <select onChange={handleWatchlistChange}>
-          <option value="">Select Watchlist</option>
-          {watchlist.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <h2>{watchlist.length === 1 && watchlist[0].name}</h2>
-      )}
-  
+      <div className="watchlist-header">
+        {watchlist.length > 1 ? (
+          <select className="watchlist-select" onChange={handleWatchlistChange}>
+            <option value="">Select Watchlist</option>
+            {watchlist.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <h2 className="watchlist-title">
+            {watchlist.length === 1 && watchlist[0].name}
+          </h2>
+        )}
+        <button className="new-watchlist-button" onClick={handleNewWatchlist}>
+          New Watchlist
+        </button>
+      </div>
       {securities.length > 0 && (
         <div className="securities-list">
           <h3>Securities:</h3>
-          <ul>
+          <div className="securities-row">
             {securities.map((security) => (
-              <li key={security.id}>
-                Symbol: {security.symbol} - Price: {security.currentPrice}
-              </li>
+              <div key={security.id} className="security-item">
+                <p>Symbol: {security.symbol}</p>
+                <p>Price: {security.currentPrice}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
