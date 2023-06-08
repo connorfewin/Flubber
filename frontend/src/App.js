@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/new-watchlist" element={<NewWatchlist />} />
+        <Route path="/CreationZone" element={<NewWatchlist />} />
       </Routes>
     </Router>
   );

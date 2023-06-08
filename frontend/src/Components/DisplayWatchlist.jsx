@@ -8,6 +8,7 @@ import {
 import { API, graphqlOperation } from "aws-amplify";
 import { onUpdateSecurity } from "../graphql/subscriptions";
 import "../Styles/Watchlist.css";
+import Security from "./Security";
 
 const DisplayWatchlist = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const DisplayWatchlist = () => {
   };
 
   const handleNewWatchlist = () => {
-    navigate("/new-watchlist");
+    navigate("/CreationZone");
   };
 
   return (
@@ -110,8 +111,7 @@ const DisplayWatchlist = () => {
           <div className="securities-row">
             {securities.map((security) => (
               <div key={security.id} className="security-item">
-                <p>Symbol: {security.symbol}</p>
-                <p>Price: {security.currentPrice}</p>
+                <Security symbol={security.symbol} securityId={security.id} currentPrice={security.currentPrice}/>
               </div>
             ))}
           </div>

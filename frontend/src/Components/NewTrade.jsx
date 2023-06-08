@@ -1,12 +1,32 @@
 import React from "react";
+import "../Styles/NewTrade.css";
 
-const NewTrade = () => {
+const NewTrade = (props) => {
+  const { onClose, securityId, symbol } = props;
 
-    // New Trade (Placed at that moment)
-    // Historical Trade (Provide the date)
+  const handleTradeSubmit = () => {
+    // Perform trade submission logic
 
-    // For every trade, you need to create or complete a share.
+    // Close the NewTrade component
+    onClose();
+  };
 
+  return (
+    <div>
+      <h4>New Trade - {symbol}</h4>
+      <p>Id: {securityId}</p>
+      {/* Render trade form */}
+      <div className="button-container">
+        <button className="submit-button" onClick={handleTradeSubmit}>
+          Submit Trade
+        </button>
+        <button className="cancel-button" onClick={onClose}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default NewTrade;
+

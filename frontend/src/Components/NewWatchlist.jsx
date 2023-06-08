@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchPortfolio } from "../api";
 import { createWatchlistAPI } from "../api"; // Import the createWatchlistAPI function
+import '../Styles/NewWatchlist.css';
 
 const NewWatchlist = () => {
   const [watchlistName, setWatchlistName] = useState("");
@@ -47,6 +48,7 @@ const NewWatchlist = () => {
 
   return (
     <div className="createWatchlist">
+      <h2>Create Watchlist</h2>
       <input
         type="text"
         value={watchlistName}

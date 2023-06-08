@@ -1,0 +1,36 @@
+.createWatchlist {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .createWatchlist input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .createWatchlist button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .createWatchlist button:hover {
+    background-color: #0056b3;
+  }
+  
+  .createWatchlist button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
