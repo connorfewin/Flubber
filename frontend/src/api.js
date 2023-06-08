@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { listPortfolios } from './graphql/queries';
-import { createGoal, createPortfolio } from './graphql/mutations';
+import { listPortfolios, listSecurities } from './graphql/queries';
+import { createGoal, createPortfolio, createWatchlist, createSecurity } from './graphql/mutations';
 
 const fetchPortfolio = async () => {
     try {
@@ -49,8 +49,68 @@ const createGoalAPI = async (portfolioId, portfolioValue, createdAt, growthGoal)
     }
 }
 
+const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
+    try {
+      const existingSecurities = await API.graphql(
+        graphqlOperation(listSecurities, {
+          filter: {
+            portfolioId: { eq: portfolioId },
+          },
+        })
+      );
+      const existingSymbols = existingSecurities.data.listSecurities.items.map(
+        (item) => item.symbol
+      );
+  
+      const securityIds = [];
+  
+      for (const symbol of securities) {
+        if (existingSymbols.includes(symbol)) {
+          const existingSecurity = existingSecurities.data.listSecurities.items.find(
+            (item) => item.symbol === symbol
+          );
+          securityIds.push(existingSecurity.id);
+        } else {
+          const newSecurity = {
+            symbol: symbol,
+            portfolioId: portfolioId,
+            portfolioAllocation: 0,
+            profitAllocation: 0,
+            currentPrice: 0,
+          };
+  
+          const securityResponse = await API.graphql(
+            graphqlOperation(createSecurity, { input: newSecurity })
+          );
+          console.log("Successfully created security: ", newSecurity.symbol);
+          const securityId = securityResponse.data.createSecurity.id;
+          securityIds.push(securityId);
+        }
+      }
+  
+      const newWatchlist = {
+        portfolioId: portfolioId,
+        name: watchlistName,
+        securityIds: securityIds,
+      };
+  
+      const watchlistResponse = await API.graphql(
+        graphqlOperation(createWatchlist, { input: newWatchlist })
+      );
+  
+      const watchlist = watchlistResponse.data.createWatchlist;
+      console.log("Successfully created watchlist:", watchlist);
+    } catch (error) {
+      console.log("Error in createWatchlistAPI:", error);
+    }
+  };
+  
+  
+
+
 export {
     fetchPortfolio,
     createPortfolioAPI,
-    createGoalAPI,    
+    createGoalAPI,  
+    createWatchlistAPI  
 }

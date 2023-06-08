@@ -13,9 +13,6 @@ export const createPortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -32,9 +29,6 @@ export const updatePortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -51,9 +45,6 @@ export const deletePortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -65,6 +56,7 @@ export const createBankTransfer = /* GraphQL */ `
   ) {
     createBankTransfer(input: $input, condition: $condition) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -79,6 +71,7 @@ export const updateBankTransfer = /* GraphQL */ `
   ) {
     updateBankTransfer(input: $input, condition: $condition) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -93,6 +86,7 @@ export const deleteBankTransfer = /* GraphQL */ `
   ) {
     deleteBankTransfer(input: $input, condition: $condition) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -107,6 +101,7 @@ export const createWatchlist = /* GraphQL */ `
   ) {
     createWatchlist(input: $input, condition: $condition) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -121,6 +116,7 @@ export const updateWatchlist = /* GraphQL */ `
   ) {
     updateWatchlist(input: $input, condition: $condition) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -135,6 +131,7 @@ export const deleteWatchlist = /* GraphQL */ `
   ) {
     deleteWatchlist(input: $input, condition: $condition) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -201,7 +198,7 @@ export const createSecurity = /* GraphQL */ `
     createSecurity(input: $input, condition: $condition) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -218,7 +215,7 @@ export const updateSecurity = /* GraphQL */ `
     updateSecurity(input: $input, condition: $condition) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -235,7 +232,7 @@ export const deleteSecurity = /* GraphQL */ `
     deleteSecurity(input: $input, condition: $condition) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -254,7 +251,6 @@ export const createTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
@@ -271,7 +267,6 @@ export const updateTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
@@ -288,7 +283,6 @@ export const deleteTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt

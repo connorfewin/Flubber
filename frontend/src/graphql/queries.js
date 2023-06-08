@@ -10,9 +10,6 @@ export const getPortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -31,9 +28,6 @@ export const listPortfolios = /* GraphQL */ `
         startingCapital
         capital
         profit
-        goalIds
-        watchlistIds
-        bankTransferIds
         updatedAt
       }
       nextToken
@@ -44,6 +38,7 @@ export const getBankTransfer = /* GraphQL */ `
   query GetBankTransfer($id: ID!) {
     getBankTransfer(id: $id) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -60,6 +55,7 @@ export const listBankTransfers = /* GraphQL */ `
     listBankTransfers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        portfolioId
         type
         amount
         createdAt
@@ -73,6 +69,7 @@ export const getWatchlist = /* GraphQL */ `
   query GetWatchlist($id: ID!) {
     getWatchlist(id: $id) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -89,6 +86,7 @@ export const listWatchlists = /* GraphQL */ `
     listWatchlists(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        portfolioId
         name
         securityIds
         createdAt
@@ -138,7 +136,7 @@ export const getSecurity = /* GraphQL */ `
     getSecurity(id: $id) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -157,7 +155,7 @@ export const listSecurities = /* GraphQL */ `
       items {
         id
         symbol
-        tradeIds
+        portfolioId
         portfolioAllocation
         profitAllocation
         currentPrice
@@ -175,7 +173,6 @@ export const getTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
@@ -194,7 +191,6 @@ export const listTrades = /* GraphQL */ `
         securityId
         goalId
         isOpen
-        shareIds
         moneyInvested
         createdAt
         updatedAt

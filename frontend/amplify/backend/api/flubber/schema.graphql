@@ -9,18 +9,17 @@ type Portfolio @model {
   startingCapital: Float!
   capital: Float
   profit: Float
-  goalIds: [String]
-  watchlistIds: [String]
-  bankTransferIds: [String]
 }
 type BankTransfer @model {
   id: ID!
+  portfolioId: String!
   type: String!
   amount: Float!
 }
 
 type Watchlist @model {
   id: ID!
+  portfolioId: String!
   name: String!
   securityIds: [String]
 }
@@ -38,7 +37,7 @@ type Goal @model {
 type Security @model {
   id: ID!
   symbol: String!
-  tradeIds: [String]
+  portfolioId: String!
   portfolioAllocation: Float
   profitAllocation: Float
   currentPrice: Float
@@ -49,14 +48,13 @@ type Trade @model {
   securityId: String!
   goalId: String
   isOpen: Boolean!
-  shareIds: [String]
   moneyInvested: Float
 }
 
 type Share @model {
   id: ID!
   createdAt: String
-  tradeId: String!
+  tradeId: String
   type: String!
   entryPrice: Float!
   exitPrice: Float

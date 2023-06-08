@@ -12,9 +12,6 @@ export const onCreatePortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -30,9 +27,6 @@ export const onUpdatePortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -48,9 +42,6 @@ export const onDeletePortfolio = /* GraphQL */ `
       startingCapital
       capital
       profit
-      goalIds
-      watchlistIds
-      bankTransferIds
       updatedAt
     }
   }
@@ -61,6 +52,7 @@ export const onCreateBankTransfer = /* GraphQL */ `
   ) {
     onCreateBankTransfer(filter: $filter) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -74,6 +66,7 @@ export const onUpdateBankTransfer = /* GraphQL */ `
   ) {
     onUpdateBankTransfer(filter: $filter) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -87,6 +80,7 @@ export const onDeleteBankTransfer = /* GraphQL */ `
   ) {
     onDeleteBankTransfer(filter: $filter) {
       id
+      portfolioId
       type
       amount
       createdAt
@@ -100,6 +94,7 @@ export const onCreateWatchlist = /* GraphQL */ `
   ) {
     onCreateWatchlist(filter: $filter) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -113,6 +108,7 @@ export const onUpdateWatchlist = /* GraphQL */ `
   ) {
     onUpdateWatchlist(filter: $filter) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -126,6 +122,7 @@ export const onDeleteWatchlist = /* GraphQL */ `
   ) {
     onDeleteWatchlist(filter: $filter) {
       id
+      portfolioId
       name
       securityIds
       createdAt
@@ -180,7 +177,7 @@ export const onCreateSecurity = /* GraphQL */ `
     onCreateSecurity(filter: $filter) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -194,7 +191,7 @@ export const onUpdateSecurity = /* GraphQL */ `
     onUpdateSecurity(filter: $filter) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -208,7 +205,7 @@ export const onDeleteSecurity = /* GraphQL */ `
     onDeleteSecurity(filter: $filter) {
       id
       symbol
-      tradeIds
+      portfolioId
       portfolioAllocation
       profitAllocation
       currentPrice
@@ -224,7 +221,6 @@ export const onCreateTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
@@ -238,7 +234,6 @@ export const onUpdateTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
@@ -252,7 +247,6 @@ export const onDeleteTrade = /* GraphQL */ `
       securityId
       goalId
       isOpen
-      shareIds
       moneyInvested
       createdAt
       updatedAt
