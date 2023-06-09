@@ -173,6 +173,7 @@ export const getTrade = /* GraphQL */ `
     getTrade(id: $id) {
       id
       securityId
+      type
       goalId
       moneyInvested
       createdAt
@@ -190,6 +191,7 @@ export const listTrades = /* GraphQL */ `
       items {
         id
         securityId
+        type
         goalId
         moneyInvested
         createdAt
@@ -205,7 +207,6 @@ export const getShare = /* GraphQL */ `
       id
       createdAt
       tradeId
-      type
       entryPrice
       exitPrice
       updatedAt
@@ -223,7 +224,6 @@ export const listShares = /* GraphQL */ `
         id
         createdAt
         tradeId
-        type
         entryPrice
         exitPrice
         updatedAt

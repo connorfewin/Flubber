@@ -47,6 +47,7 @@ type Security @model {
 type Trade @model {
   id: ID!
   securityId: String!
+  type: String!
   goalId: String
   moneyInvested: Float
 }
@@ -54,8 +55,7 @@ type Trade @model {
 type Share @model {
   id: ID!
   createdAt: String
-  tradeId: String
-  type: String!
+  tradeId: String!
   entryPrice: Float!
   exitPrice: Float
 }

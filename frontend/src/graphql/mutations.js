@@ -252,6 +252,7 @@ export const createTrade = /* GraphQL */ `
     createTrade(input: $input, condition: $condition) {
       id
       securityId
+      type
       goalId
       moneyInvested
       createdAt
@@ -267,6 +268,7 @@ export const updateTrade = /* GraphQL */ `
     updateTrade(input: $input, condition: $condition) {
       id
       securityId
+      type
       goalId
       moneyInvested
       createdAt
@@ -282,6 +284,7 @@ export const deleteTrade = /* GraphQL */ `
     deleteTrade(input: $input, condition: $condition) {
       id
       securityId
+      type
       goalId
       moneyInvested
       createdAt
@@ -298,7 +301,6 @@ export const createShare = /* GraphQL */ `
       id
       createdAt
       tradeId
-      type
       entryPrice
       exitPrice
       updatedAt
@@ -314,7 +316,6 @@ export const updateShare = /* GraphQL */ `
       id
       createdAt
       tradeId
-      type
       entryPrice
       exitPrice
       updatedAt
@@ -330,7 +331,6 @@ export const deleteShare = /* GraphQL */ `
       id
       createdAt
       tradeId
-      type
       entryPrice
       exitPrice
       updatedAt

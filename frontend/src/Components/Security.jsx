@@ -6,6 +6,7 @@ const Security = (props) => {
   const { security } = props;
   const [trades, setTrades] = useState([]);
   const [positionIsOpen, setPositionIsOpen] = useState();
+  const [openTrade, setOpenTrade] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,11 @@ const Security = (props) => {
     if (openTrades.length > 1) {
       throw new Error(`${security.symbol} has more than one open trade`);
     }
-    setPositionIsOpen(openTrades.length > 0);
+    if(openTrades.length > 0){
+      setPositionIsOpen(true);
+      setOpenTrade(openTrades[0])
+    }
+    
   }, [trades, security.symbol]);
 
   useEffect(() => {
@@ -53,6 +58,7 @@ const Security = (props) => {
           <NewTrade
             onClose={() => setShowNewTrade(false)}
             security={security}
+            openTrade={openTrade}
           />
         ) : (
           <button onClick={handleNewTradeClick}>New Trade</button>
