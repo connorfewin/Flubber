@@ -173,6 +173,7 @@ export const getTrade = /* GraphQL */ `
     getTrade(id: $id) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested
@@ -191,6 +192,7 @@ export const listTrades = /* GraphQL */ `
       items {
         id
         securityId
+        isOpen
         type
         goalId
         moneyInvested

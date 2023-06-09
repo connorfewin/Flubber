@@ -47,6 +47,7 @@ type Security @model {
 type Trade @model {
   id: ID!
   securityId: String!
+  isOpen: Boolean!
   type: String!
   goalId: String
   moneyInvested: Float

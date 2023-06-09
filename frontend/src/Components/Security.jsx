@@ -5,13 +5,19 @@ import NewTrade from "./NewTrade";
 const Security = (props) => {
   const { security } = props;
   const [trades, setTrades] = useState([]);
-  const [positionIsOpen, setPositionIsOpen] = useState();
   const [openTrade, setOpenTrade] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
+
+  const updateSecurityIsOpen = async (flag) => {
+    updateSecurityIsOpenAPI(security.id, flag);
+  };
 
   useEffect(() => {
     const fetchTrades = async () => {
       const tradesResponse = await fetchAllSecurityTradesAPI(security.id);
+      console.log(security.symbol);
+      console.log(security.id);
+      console.log("Trade Response: ", tradesResponse);
       setTrades(tradesResponse);
     };
 
@@ -23,22 +29,14 @@ const Security = (props) => {
     if (openTrades.length > 1) {
       throw new Error(`${security.symbol} has more than one open trade`);
     }
-    if(openTrades.length > 0){
-      setPositionIsOpen(true);
-      setOpenTrade(openTrades[0])
+
+    if (openTrades.length > 0) {
+      setOpenTrade(openTrades[0]);
+      updateSecurityIsOpen(true);
+    } else {
+      updateSecurityIsOpen(false);
     }
-    
   }, [trades, security.symbol]);
-
-  useEffect(() => {
-    const updateSecurityIsOpen = async () => {
-      updateSecurityIsOpenAPI(security.id, positionIsOpen);
-    };
-
-    if (positionIsOpen !== security.isOpen) {
-      updateSecurityIsOpen();
-    }
-  }, [positionIsOpen]);
 
   const handleNewTradeClick = () => {
     setShowNewTrade(true);

@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { getSecurity, listPortfolios, listSecurities, listTrades, listWatchlists } from './graphql/queries';
-import { createGoal, createPortfolio, createWatchlist, createSecurity, updateSecurity } from './graphql/mutations';
+import { createGoal, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare } from './graphql/mutations';
 
 const fetchPortfolio = async () => {
     try {
@@ -38,12 +38,12 @@ const fetchManySecuritiesAPI = async (securityIds) => {
   } catch (error) {console.log("error in fetchManySecuritiesAPI: ", error)}
 }
 
-const fetchAllSecurityTradesAPI = async (security) => {
+const fetchAllSecurityTradesAPI = async (securityId) => {
   try {
     const tradesResponse = await API.graphql(
       graphqlOperation(listTrades, {
         filter: {
-          securityId: { eq: security.id },
+          securityId: { eq: securityId },
         },
       })
     );
@@ -148,18 +148,66 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
-  const updateSecurityIsOpenAPI = async (id, isOpen) => {
-    console.log("user: ", id);
-    console.log("IsOpen: ", isOpen);
-    try{
-      await API.graphql(
-        graphqlOperation(updateSecurity, {
-          input: { id: id, isOpen: isOpen },
-        })
-      );
-      console.log("Successfully updated security isOpen field");
-    } catch (error) {console.log("error in updateSecurityIsOpen: ", error)}
+const updateSecurityIsOpenAPI = async (id, isOpen) => {
+  console.log("user: ", id);
+  console.log("IsOpen: ", isOpen);
+  try{
+    await API.graphql(
+      graphqlOperation(updateSecurity, {
+        input: { id: id, isOpen: isOpen },
+      })
+    );
+    console.log("Successfully updated security isOpen field");
+  } catch (error) {console.log("error in updateSecurityIsOpen: ", error)}
+}
+
+const executeTrade = async (security, openTrade, date, price, shares, selectedTradeType) => {
+  console.log(security);
+  console.log(openTrade);
+
+  try {
+    if (!security.isOpen) {
+      // Create a new trade
+      console.log("Creating a new trade");
+      if (!price || !shares || !selectedTradeType || !date) {
+        console.log("Empty Value");
+        return;
+      }
+
+      console.log("Date:", date);
+      console.log("Price:", price);
+      console.log("Shares:", shares);
+      console.log("Trade Type:", selectedTradeType);
+      const newTrade = {
+        securityId: security.id,
+        type: selectedTradeType,
+        isOpen: true,
+      }
+      const tradeResponse = await API.graphql(graphqlOperation(createTrade, {input: newTrade}));
+      const trade = tradeResponse.data.createTrade;
+      console.log("Successfully created a new trade: ", trade);
+
+      for (let i = 0; i < shares; i++) {
+        // Perform trade operation for each share
+        console.log(`Processing trade for share ${i + 1}`);
+        const newShare = {
+          createdAt: date,
+          tradeId: trade.id,
+          entryPrice: price,
+        }
+        const shareResponse = await API.graphql(graphqlOperation(createShare, {input: newShare}));
+        const share = shareResponse.data.createShare;
+      }
+      console.log("Successfully created shares");
+    } else {
+      // List all shares with openTrade.id
+      console.log("Listing shares with openTrade.id:", openTrade.id);
+    }
+  } catch (error) {
+    console.log("Error in executeTrade:", error);
   }
+};
+
 
 export {
     fetchPortfolio,
@@ -170,4 +218,5 @@ export {
     createGoalAPI,  
     createWatchlistAPI,
     updateSecurityIsOpenAPI,  
+    executeTrade,
 }

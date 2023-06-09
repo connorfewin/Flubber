@@ -222,6 +222,7 @@ export const onCreateTrade = /* GraphQL */ `
     onCreateTrade(filter: $filter) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested
@@ -235,6 +236,7 @@ export const onUpdateTrade = /* GraphQL */ `
     onUpdateTrade(filter: $filter) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested
@@ -248,6 +250,7 @@ export const onDeleteTrade = /* GraphQL */ `
     onDeleteTrade(filter: $filter) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested

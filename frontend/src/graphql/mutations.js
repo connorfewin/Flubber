@@ -252,6 +252,7 @@ export const createTrade = /* GraphQL */ `
     createTrade(input: $input, condition: $condition) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested
@@ -268,6 +269,7 @@ export const updateTrade = /* GraphQL */ `
     updateTrade(input: $input, condition: $condition) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested
@@ -284,6 +286,7 @@ export const deleteTrade = /* GraphQL */ `
     deleteTrade(input: $input, condition: $condition) {
       id
       securityId
+      isOpen
       type
       goalId
       moneyInvested

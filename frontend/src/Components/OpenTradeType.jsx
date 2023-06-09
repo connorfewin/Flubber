@@ -1,20 +1,24 @@
 import React from "react";
 
-const OpenTradeType = ({ selectedTradeType, handleTradeTypeChange, openTrade }) => {
+const OpenTradeType = ({
+  selectedTradeType,
+  handleTradeTypeChange,
+  openTrade,
+}) => {
   return (
     <div>
-      <input
-        type="radio"
-        id="buy"
-        name="tradeType"
-        value="Buy"
-        checked={selectedTradeType === "Buy"}
-        onChange={handleTradeTypeChange}
-      />
-      <label htmlFor="buy">Buy</label>
-
       {openTrade.type === "Buy" && (
         <>
+          <input
+            type="radio"
+            id="buy"
+            name="tradeType"
+            value="Buy"
+            checked={selectedTradeType === "Buy"}
+            onChange={handleTradeTypeChange}
+          />
+          <label htmlFor="buy">Buy</label>
+
           <input
             type="radio"
             id="sell"
