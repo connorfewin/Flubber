@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { getSecurity, listPortfolios, listSecurities, listWatchlists } from './graphql/queries';
-import { createGoal, createPortfolio, createWatchlist, createSecurity } from './graphql/mutations';
+import { getSecurity, listPortfolios, listSecurities, listTrades, listWatchlists } from './graphql/queries';
+import { createGoal, createPortfolio, createWatchlist, createSecurity, updateSecurity } from './graphql/mutations';
 
 const fetchPortfolio = async () => {
     try {
@@ -36,6 +36,21 @@ const fetchManySecuritiesAPI = async (securityIds) => {
     console.log("Successfully fetched watchlist's securities: ", securities);
     return securities;
   } catch (error) {console.log("error in fetchManySecuritiesAPI: ", error)}
+}
+
+const fetchAllSecurityTradesAPI = async (security) => {
+  try {
+    const tradesResponse = await API.graphql(
+      graphqlOperation(listTrades, {
+        filter: {
+          securityId: { eq: security.id },
+        },
+      })
+    );
+    const trades = tradesResponse.data.listTrades.items;
+    console.log("Successfully fetched security's trade: ", trades);
+    return trades;
+  } catch (error) {console.log("error in fetchAllSecurityTradesAPI: ", error)}
 }
 
 const createPortfolioAPI = async (startingCapital, createdAt) => {
@@ -103,6 +118,7 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
             portfolioId: portfolioId,
             portfolioAllocation: 0,
             profitAllocation: 0,
+            isOpen: false,
             currentPrice: 0,
           };
   
@@ -132,11 +148,26 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
+  const updateSecurityIsOpenAPI = async (id, isOpen) => {
+    console.log("user: ", id);
+    console.log("IsOpen: ", isOpen);
+    try{
+      await API.graphql(
+        graphqlOperation(updateSecurity, {
+          input: { id: id, isOpen: isOpen },
+        })
+      );
+      console.log("Successfully updated security isOpen field");
+    } catch (error) {console.log("error in updateSecurityIsOpen: ", error)}
+  }
+
 export {
     fetchPortfolio,
     fetchWatchlistsAPI,
     fetchManySecuritiesAPI,
+    fetchAllSecurityTradesAPI,
     createPortfolioAPI,
     createGoalAPI,  
-    createWatchlistAPI  
+    createWatchlistAPI,
+    updateSecurityIsOpenAPI,  
 }

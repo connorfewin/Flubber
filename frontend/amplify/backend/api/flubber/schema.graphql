@@ -40,6 +40,7 @@ type Security @model {
   portfolioId: String!
   portfolioAllocation: Float
   profitAllocation: Float
+  isOpen: Boolean!
   currentPrice: Float
 }
 
@@ -47,7 +48,6 @@ type Trade @model {
   id: ID!
   securityId: String!
   goalId: String
-  isOpen: Boolean!
   moneyInvested: Float
 }
 

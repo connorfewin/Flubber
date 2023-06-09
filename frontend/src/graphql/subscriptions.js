@@ -180,6 +180,7 @@ export const onCreateSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      isOpen
       currentPrice
       createdAt
       updatedAt
@@ -194,6 +195,7 @@ export const onUpdateSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      isOpen
       currentPrice
       createdAt
       updatedAt
@@ -208,6 +210,7 @@ export const onDeleteSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      isOpen
       currentPrice
       createdAt
       updatedAt
@@ -220,7 +223,6 @@ export const onCreateTrade = /* GraphQL */ `
       id
       securityId
       goalId
-      isOpen
       moneyInvested
       createdAt
       updatedAt
@@ -233,7 +235,6 @@ export const onUpdateTrade = /* GraphQL */ `
       id
       securityId
       goalId
-      isOpen
       moneyInvested
       createdAt
       updatedAt
@@ -246,7 +247,6 @@ export const onDeleteTrade = /* GraphQL */ `
       id
       securityId
       goalId
-      isOpen
       moneyInvested
       createdAt
       updatedAt

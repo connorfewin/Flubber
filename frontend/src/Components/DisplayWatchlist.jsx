@@ -15,6 +15,7 @@ const DisplayWatchlist = () => {
   const [portfolio, setPortfolio] = useState("");
   const [watchlist, setWatchlist] = useState([]);
   const [securities, setSecurities] = useState([]);
+  const [updateSecuritiesTrigger, setUpdateSecuritiesTrigger] = useState(false)
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const DisplayWatchlist = () => {
 
     fetchWatchlists();
   }, [portfolio.id]);
+
   useEffect(() => {
     const fetchSecurities = async () => {
       if (selectedWatchlist && selectedWatchlist.securityIds.length > 0) {
@@ -110,9 +112,7 @@ const DisplayWatchlist = () => {
           <h3>Securities:</h3>
           <div className="securities-row">
             {securities.map((security) => (
-              <div key={security.id} className="security-item">
-                <Security symbol={security.symbol} securityId={security.id} currentPrice={security.currentPrice}/>
-              </div>
+                <Security symbol={security.symbol} security={security} />
             ))}
           </div>
         </div>

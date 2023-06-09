@@ -52,7 +52,7 @@
     flex-wrap: wrap;
   }
   
-  .security-item {
+  .security-item-open {
     width: 250px;
     /* Set the width as desired */
     border: 1px solid #ccc;
@@ -64,5 +64,10 @@
     /* Add desired margin-bottom value */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Add desired box shadow value */
+  }
+
+  .security-item-closed {
+    background-color: #123868;
+    color: white;
   }
   

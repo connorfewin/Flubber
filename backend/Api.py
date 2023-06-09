@@ -2,28 +2,30 @@ import requests
 import json
 from Config import api_key, endpoint_url
 
+
 def access_appsync_get_securities():
     try:
         # Define the GraphQL query
         query = '''
             query ListSecurities(
-              $filter: ModelSecurityFilterInput
-              $limit: Int
-              $nextToken: String
+                $filter: ModelSecurityFilterInput
+                $limit: Int
+                $nextToken: String
             ) {
-              listSecurities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+                listSecurities(filter: $filter, limit: $limit, nextToken: $nextToken) {
                 items {
-                  id
-                  symbol
-                  portfolioId
-                  portfolioAllocation
-                  profitAllocation
-                  currentPrice
-                  createdAt
-                  updatedAt
+                    id
+                    symbol
+                    portfolioId
+                    portfolioAllocation
+                    profitAllocation
+                    isOpen
+                    currentPrice
+                    createdAt
+                    updatedAt
                 }
                 nextToken
-              }
+                }
             }
         '''
 
@@ -43,7 +45,8 @@ def access_appsync_get_securities():
         }
 
         # Make the HTTP POST request
-        response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
+        response = requests.post(
+            endpoint_url, headers=headers, data=json.dumps(payload))
 
         # Handle the response
         if response.status_code == 200:
@@ -55,21 +58,26 @@ def access_appsync_get_securities():
     except requests.exceptions.RequestException as e:
         print("Error:", str(e))
 
+
 def access_appsync_update_security(security):
     try:
         # Define the GraphQL mutation to update a security
         mutation = '''
-            mutation UpdateSecurity($input: UpdateSecurityInput!) {
-              updateSecurity(input: $input) {
+            mutation UpdateSecurity(
+                $input: UpdateSecurityInput!
+                $condition: ModelSecurityConditionInput
+            ) {
+                updateSecurity(input: $input, condition: $condition) {
                 id
                 symbol
                 portfolioId
                 portfolioAllocation
                 profitAllocation
+                isOpen
                 currentPrice
                 createdAt
                 updatedAt
-              }
+                }
             }
         '''
 
@@ -88,7 +96,8 @@ def access_appsync_update_security(security):
         }
 
         # Make the HTTP POST request
-        response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
+        response = requests.post(
+            endpoint_url, headers=headers, data=json.dumps(payload))
 
         # Handle the response
         if response.status_code == 200:

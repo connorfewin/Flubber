@@ -139,6 +139,7 @@ export const getSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      isOpen
       currentPrice
       createdAt
       updatedAt
@@ -158,6 +159,7 @@ export const listSecurities = /* GraphQL */ `
         portfolioId
         portfolioAllocation
         profitAllocation
+        isOpen
         currentPrice
         createdAt
         updatedAt
@@ -172,7 +174,6 @@ export const getTrade = /* GraphQL */ `
       id
       securityId
       goalId
-      isOpen
       moneyInvested
       createdAt
       updatedAt
@@ -190,7 +191,6 @@ export const listTrades = /* GraphQL */ `
         id
         securityId
         goalId
-        isOpen
         moneyInvested
         createdAt
         updatedAt
