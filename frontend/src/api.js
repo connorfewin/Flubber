@@ -214,7 +214,6 @@ const createShares = async (tradeId, date, price, shares) => {
 const closeShares = (openShares, numSharesToClose, exitPrice) => {
   // Sort the open shares by createdAt (assuming most recent ones sold first)
   const sortedOpenShares = openShares.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  console.log("OPEN SHARES LENGTH: ", openShares.length);
   // Close the specified number of shares
   for (let i = 0; i < numSharesToClose; i++) {
     sortedOpenShares[i].exitPrice = parseFloat(exitPrice);
@@ -255,8 +254,6 @@ const updateTradeStatus = async (trade) => {
 
 
 const executeTrade = async (security, openTrade, date, price, shares, selectedTradeType) => {
-  console.log(security);
-  console.log(openTrade);
 
   if (!price || !shares || !selectedTradeType || !date) {
     console.log("Empty Value");
@@ -303,15 +300,14 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
 
         // Check if there are remaining open shares
         const stillOpenShares = updatedShares.filter(item => item.isOpen);
-        console.log("STILL OPEN SHARES: ", stillOpenShares);
         // If there are no more open shares, close the trade
         if (stillOpenShares.length === 0) {
           openTrade.isOpen = false;
           await updateTradeStatus(openTrade);
-          console.log("returning null");
+          console.log("Trade is closed");
           return null;
         }
-        console.log("returning OPEN TRADE");
+        console.log("Trade is still open");
         return openTrade;
       }
     }
