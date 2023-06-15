@@ -265,6 +265,7 @@ export const onCreateShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
@@ -277,6 +278,7 @@ export const onUpdateShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
@@ -289,6 +291,7 @@ export const onDeleteShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt

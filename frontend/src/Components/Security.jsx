@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { fetchAllSecurityTradesAPI, updateSecurityIsOpenAPI } from "../api";
+import { fetchAllSecurityTradesAPI, fetchSharesByTradeIdAPI, updateSecurityIsOpenAPI } from "../api";
 import NewTrade from "./NewTrade";
 
 const Security = (props) => {
   const { security } = props;
   const [trades, setTrades] = useState([]);
   const [openTrade, setOpenTrade] = useState(null);
+  const [numShares, setNumShares] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
 
   const updateSecurityIsOpen = async (flag) => {
@@ -32,11 +33,27 @@ const Security = (props) => {
 
     if (openTrades.length > 0) {
       setOpenTrade(openTrades[0]);
-      updateSecurityIsOpen(true);
-    } else {
-      updateSecurityIsOpen(false);
     }
   }, [trades, security.symbol]);
+
+  useEffect(() => {
+    const fetchNumShares = async () => {
+      const shares = await fetchSharesByTradeIdAPI(openTrade.id)
+      const openShares = shares.filter(item => item.isOpen);
+      setNumShares(openShares.length);
+    };
+
+    if (openTrade !== null){
+      updateSecurityIsOpen(true);
+      fetchNumShares();
+    } else {
+      updateSecurityIsOpen(false);
+      setNumShares(null);
+    }
+    
+
+ 
+  }, [openTrade]);
 
   const handleNewTradeClick = () => {
     setShowNewTrade(true);
@@ -52,11 +69,13 @@ const Security = (props) => {
       >
         <p>Symbol: {security.symbol}</p>
         <p>Current Price: ${security.currentPrice}</p>
+        {numShares != null && <p>Shares: {numShares}</p>}
         {showNewTrade ? (
           <NewTrade
             onClose={() => setShowNewTrade(false)}
             security={security}
             openTrade={openTrade}
+            setOpenTrade={setOpenTrade}
           />
         ) : (
           <button onClick={handleNewTradeClick}>New Trade</button>

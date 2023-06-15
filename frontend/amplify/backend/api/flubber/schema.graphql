@@ -57,6 +57,7 @@ type Share @model {
   id: ID!
   createdAt: String
   tradeId: String!
+  isOpen: Boolean!
   entryPrice: Float!
   exitPrice: Float
 }

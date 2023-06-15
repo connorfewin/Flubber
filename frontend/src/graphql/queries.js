@@ -209,6 +209,7 @@ export const getShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
@@ -226,6 +227,7 @@ export const listShares = /* GraphQL */ `
         id
         createdAt
         tradeId
+        isOpen
         entryPrice
         exitPrice
         updatedAt

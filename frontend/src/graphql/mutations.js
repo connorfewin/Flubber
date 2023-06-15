@@ -304,6 +304,7 @@ export const createShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
@@ -319,6 +320,7 @@ export const updateShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
@@ -334,6 +336,7 @@ export const deleteShare = /* GraphQL */ `
       id
       createdAt
       tradeId
+      isOpen
       entryPrice
       exitPrice
       updatedAt
