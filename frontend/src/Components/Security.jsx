@@ -6,6 +6,7 @@ const Security = (props) => {
   const { security } = props;
   const [trades, setTrades] = useState([]);
   const [openTrade, setOpenTrade] = useState(null);
+  const [openTradeUpdate, setOpenTradeUpdate] = useState(false);
   const [numShares, setNumShares] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
 
@@ -23,7 +24,7 @@ const Security = (props) => {
     };
 
     fetchTrades();
-  }, [setTrades, security.id]);
+  }, [setTrades, security.id, security.symbol]);
 
   useEffect(() => {
     const openTrades = (trades ?? []).filter((trade) => trade.isOpen === true);
@@ -37,6 +38,7 @@ const Security = (props) => {
   }, [trades, security.symbol]);
 
   useEffect(() => {
+    console.log('UPDATE NUM SHARES');
     const fetchNumShares = async () => {
       const shares = await fetchSharesByTradeIdAPI(openTrade.id)
       const openShares = shares.filter(item => item.isOpen);
@@ -50,10 +52,14 @@ const Security = (props) => {
       updateSecurityIsOpen(false);
       setNumShares(null);
     }
-    
+  }, [openTradeUpdate]);
 
- 
-  }, [openTrade]);
+  // Function to update openTrade and trigger the effect
+  const updateOpenTrade = (newOpenTrade) => {
+    console.log('update Open Trade')
+    setOpenTrade(newOpenTrade);
+    setOpenTradeUpdate(prev => !prev); // Toggle the value of openTradeUpdate
+  };
 
   const handleNewTradeClick = () => {
     setShowNewTrade(true);
@@ -75,7 +81,7 @@ const Security = (props) => {
             onClose={() => setShowNewTrade(false)}
             security={security}
             openTrade={openTrade}
-            setOpenTrade={setOpenTrade}
+            updateOpenTrade={updateOpenTrade}
           />
         ) : (
           <button onClick={handleNewTradeClick}>New Trade</button>

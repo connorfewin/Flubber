@@ -203,13 +203,48 @@ export const listTrades = /* GraphQL */ `
     }
   }
 `;
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        tradeId
+        createdAt
+        type
+        numShares
+        price
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getShare = /* GraphQL */ `
   query GetShare($id: ID!) {
     getShare(id: $id) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt
@@ -225,9 +260,11 @@ export const listShares = /* GraphQL */ `
     listShares(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        createdAt
         tradeId
+        orderId
         isOpen
+        createdAt
+        closedAt
         entryPrice
         exitPrice
         updatedAt

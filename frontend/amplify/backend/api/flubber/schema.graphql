@@ -53,11 +53,22 @@ type Trade @model {
   moneyInvested: Float
 }
 
+type Order @model {
+  id: ID!
+  tradeId: String!
+  createdAt: String!
+  type: String!
+  numShares: Int!
+  price: Float!
+}
+
 type Share @model {
   id: ID!
-  createdAt: String
   tradeId: String!
+  orderId: String!
   isOpen: Boolean!
+  createdAt: String
+  closedAt: String
   entryPrice: Float!
   exitPrice: Float
 }

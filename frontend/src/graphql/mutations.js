@@ -295,6 +295,54 @@ export const deleteTrade = /* GraphQL */ `
     }
   }
 `;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    deleteOrder(input: $input, condition: $condition) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
 export const createShare = /* GraphQL */ `
   mutation CreateShare(
     $input: CreateShareInput!
@@ -302,9 +350,11 @@ export const createShare = /* GraphQL */ `
   ) {
     createShare(input: $input, condition: $condition) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt
@@ -318,9 +368,11 @@ export const updateShare = /* GraphQL */ `
   ) {
     updateShare(input: $input, condition: $condition) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt
@@ -334,9 +386,11 @@ export const deleteShare = /* GraphQL */ `
   ) {
     deleteShare(input: $input, condition: $condition) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt

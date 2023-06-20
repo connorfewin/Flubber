@@ -259,13 +259,54 @@ export const onDeleteTrade = /* GraphQL */ `
     }
   }
 `;
+export const onCreateOrder = /* GraphQL */ `
+  subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
+    onCreateOrder(filter: $filter) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOrder = /* GraphQL */ `
+  subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
+    onUpdateOrder(filter: $filter) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
+export const onDeleteOrder = /* GraphQL */ `
+  subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
+    onDeleteOrder(filter: $filter) {
+      id
+      tradeId
+      createdAt
+      type
+      numShares
+      price
+      updatedAt
+    }
+  }
+`;
 export const onCreateShare = /* GraphQL */ `
   subscription OnCreateShare($filter: ModelSubscriptionShareFilterInput) {
     onCreateShare(filter: $filter) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt
@@ -276,9 +317,11 @@ export const onUpdateShare = /* GraphQL */ `
   subscription OnUpdateShare($filter: ModelSubscriptionShareFilterInput) {
     onUpdateShare(filter: $filter) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt
@@ -289,9 +332,11 @@ export const onDeleteShare = /* GraphQL */ `
   subscription OnDeleteShare($filter: ModelSubscriptionShareFilterInput) {
     onDeleteShare(filter: $filter) {
       id
-      createdAt
       tradeId
+      orderId
       isOpen
+      createdAt
+      closedAt
       entryPrice
       exitPrice
       updatedAt

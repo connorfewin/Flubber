@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { getSecurity, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
-import { createGoal, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade } from './graphql/mutations';
+import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade } from './graphql/mutations';
 
 const fetchPortfolio = async () => {
     try {
@@ -191,10 +191,27 @@ const createNewTrade = async (security, selectedTradeType) => {
   return trade;
 };
 
-const createShares = async (tradeId, date, price, shares) => {
+const createNewOrder = async (newTrade, date, tradeType, shares, price) => {
+  const newOrder = {
+    tradeId: newTrade.id,
+    createdAt: date,
+    type: tradeType,
+    numShares: shares,
+    price: price
+  };
+
+  const orderResponse = await API.graphql(graphqlOperation(createOrder, { input: newOrder }));
+  const order = orderResponse.data.createOrder;
+  console.log("Successfully created a new order:", order);
+
+  return order;
+};
+
+const createShares = async (tradeId, orderId, date, price, shares) => {
   const newShares = Array.from({ length: shares }, (_, index) => ({
     createdAt: date,
     tradeId: tradeId,
+    orderId: orderId,
     entryPrice: price,
     isOpen: true,
   }));
@@ -210,13 +227,14 @@ const createShares = async (tradeId, date, price, shares) => {
 };
 
 // Function to close the specified number of open shares
-const closeShares = (openShares, numSharesToClose, exitPrice) => {
+const closeShares = (openShares, numSharesToClose, exitPrice, date) => {
   // Sort the open shares by createdAt (assuming most recent ones sold first)
   const sortedOpenShares = openShares.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   // Close the specified number of shares
   for (let i = 0; i < numSharesToClose; i++) {
     sortedOpenShares[i].exitPrice = parseFloat(exitPrice);
     sortedOpenShares[i].isOpen = false;
+    sortedOpenShares[i].closedAt = date;
   }
 
   console.log("Updated shares: ", sortedOpenShares);
@@ -229,7 +247,7 @@ const updateClosedShares = async (closedShares) => {
     for (const share of closedShares) {
       await API.graphql(
         graphqlOperation(updateShare, {
-          input: { id: share.id, isOpen: share.isOpen, exitPrice: parseFloat(share.exitPrice) },
+          input: { id: share.id, isOpen: share.isOpen, closedAt: share.closedAt, exitPrice: parseFloat(share.exitPrice) },
         })
       );
     }
@@ -269,8 +287,9 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
       console.log("Creating a new trade");
 
       const newTrade = await createNewTrade(security, selectedTradeType, shares);
-
-      await createShares(newTrade.id, date, price, shares);
+      const newOrder = await createNewOrder(newTrade, date, selectedTradeType, shares, price);
+  
+      await createShares(newTrade.id, newOrder.id, date, price, shares);
 
       return newTrade;
     } else {
@@ -282,16 +301,21 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
       const numOpenShares = openShares.length;
 
       if (openTrade.type === selectedTradeType) {
-        await createShares(openTrade.id, date, price, shares);
+        const newOrder = await createNewOrder(openTrade, date, selectedTradeType, shares, price);
+        await createShares(openTrade.id, newOrder.id, date, price, shares);
+        console.log("Increased position. Trade is still open.")
+        return openTrade;
       } else {
         // reducing the position
         if (shares > numOpenShares) {
           console.log("Invalid number of shares");
           return openTrade;
         }
+        // Submit Order
+        await createNewOrder(openTrade, date, selectedTradeType, shares, price);
         // Close the specified number of open shares
         // HERE IS THE ISSUE< THIS OR UPDATE CLOSED SHARES
-        const updatedShares = closeShares(openShares, shares, price);
+        const updatedShares = closeShares(openShares, shares, price, date);
         const recentlyClosedShares = updatedShares.filter(item => !item.isOpen);
         // Update the closed shares in the database
         await updateClosedShares(recentlyClosedShares); //
@@ -305,7 +329,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
           console.log("Trade is closed");
           return null;
         }
-        console.log("Trade is still open");
+        console.log("Reduced Position. Trade is still open");
         return openTrade;
       }
     }

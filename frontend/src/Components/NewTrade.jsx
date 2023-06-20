@@ -6,7 +6,7 @@ import DateInput from "./DateInnput";
 import { executeTrade } from "../api";
 
 const NewTrade = (props) => {
-  const { onClose, security, openTrade, setOpenTrade } = props;
+  const { onClose, security, openTrade, updateOpenTrade } = props;
   const [selectedTradeType, setSelectedTradeType] = useState("");
   const [shares, setShares] = useState("");
   const [price, setPrice] = useState("");
@@ -16,7 +16,7 @@ const NewTrade = (props) => {
     // Perform trade submission logic based on selectedTradeType, shares, and price
     try {
       const tradeResposne =  await executeTrade(security, openTrade, date, price, shares, selectedTradeType);
-      setOpenTrade(tradeResposne);
+      updateOpenTrade(tradeResposne);
     } catch (error) {
       console.log("Error in executeTrade:", error);
     }
