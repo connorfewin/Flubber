@@ -53,7 +53,6 @@ const fetchAllSecurityTradesAPI = async (securityId) => {
   } catch (error) {console.log("error in fetchAllSecurityTradesAPI: ", error)}
 }
 
-
 const fetchSharesByTradeIdAPI = async (tradeId) => {
   try {
     const sharesResponse = await API.graphql(
@@ -252,7 +251,6 @@ const updateTradeStatus = async (trade) => {
   }
 };
 
-
 const executeTrade = async (security, openTrade, date, price, shares, selectedTradeType) => {
 
   if (!price || !shares || !selectedTradeType || !date) {
@@ -315,8 +313,6 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
     console.log("Error in executeTrade:", error);
   }
 };
-
-
 
 export {
     fetchPortfolio,
