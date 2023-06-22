@@ -40,12 +40,13 @@ const Security = (props) => {
   useEffect(() => {
     console.log('UPDATE NUM SHARES');
     const fetchNumShares = async () => {
+      console.log("open trade: ", openTrade);
       const shares = await fetchSharesByTradeIdAPI(openTrade.id)
       const openShares = shares.filter(item => item.isOpen);
       setNumShares(openShares.length);
     };
 
-    if (openTrade !== null){
+    if (openTrade && openTrade !== null){
       updateSecurityIsOpen(true);
       fetchNumShares();
     } else {

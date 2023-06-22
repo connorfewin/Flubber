@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchPortfolio } from "../api";
+import { fetchPortfolioAPI } from "../api";
 import { createWatchlistAPI } from "../api"; // Import the createWatchlistAPI function
 import '../Styles/NewWatchlist.css';
 
@@ -10,7 +10,7 @@ const NewWatchlist = () => {
 
   useEffect(() => {
     const fetchPortfolioData = async () => {
-      const data = await fetchPortfolio();
+      const data = await fetchPortfolioAPI();
       setPortfolio(data);
     };
 

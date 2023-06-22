@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createGoalAPI } from "../api";
-import { fetchPortfolio } from "../api";
+import { fetchPortfolioAPI } from "../api";
 import DateInput from "./DateInnput";
 
 const NewGoal = () => {
@@ -12,7 +12,7 @@ const NewGoal = () => {
 
   useEffect(() => {
     const fetchPortfolioData = async () => {
-      const data = await fetchPortfolio();
+      const data = await fetchPortfolioAPI();
       setPortfolio(data);
     };
 

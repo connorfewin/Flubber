@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  fetchPortfolio,
+  fetchPortfolioAPI,
   fetchWatchlistsAPI,
   fetchManySecuritiesAPI,
 } from "../api";
@@ -20,7 +20,7 @@ const DisplayWatchlist = () => {
 
   useEffect(() => {
     const fetchWatchlists = async () => {
-      const portfolioResponse = await fetchPortfolio();
+      const portfolioResponse = await fetchPortfolioAPI();
       setPortfolio(portfolioResponse);
       const watchlistResponse = await fetchWatchlistsAPI(portfolio.id);
       setWatchlist(watchlistResponse);

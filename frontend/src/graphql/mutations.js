@@ -302,6 +302,8 @@ export const createOrder = /* GraphQL */ `
   ) {
     createOrder(input: $input, condition: $condition) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
@@ -318,6 +320,8 @@ export const updateOrder = /* GraphQL */ `
   ) {
     updateOrder(input: $input, condition: $condition) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
@@ -334,6 +338,8 @@ export const deleteOrder = /* GraphQL */ `
   ) {
     deleteOrder(input: $input, condition: $condition) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type

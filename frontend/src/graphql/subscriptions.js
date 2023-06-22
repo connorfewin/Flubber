@@ -263,6 +263,8 @@ export const onCreateOrder = /* GraphQL */ `
   subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
     onCreateOrder(filter: $filter) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
@@ -276,6 +278,8 @@ export const onUpdateOrder = /* GraphQL */ `
   subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
     onUpdateOrder(filter: $filter) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
@@ -289,6 +293,8 @@ export const onDeleteOrder = /* GraphQL */ `
   subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
     onDeleteOrder(filter: $filter) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
