@@ -207,6 +207,8 @@ export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {
       id
+      securityId
+      symbol
       tradeId
       createdAt
       type
@@ -225,6 +227,8 @@ export const listOrders = /* GraphQL */ `
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        securityId
+        symbol
         tradeId
         createdAt
         type

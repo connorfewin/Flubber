@@ -55,6 +55,8 @@ type Trade @model {
 
 type Order @model {
   id: ID!
+  securityId: String!
+  symbol: String!
   tradeId: String!
   createdAt: String!
   type: String!

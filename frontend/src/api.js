@@ -1,14 +1,23 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { getSecurity, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
+import { getSecurity, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
 import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade } from './graphql/mutations';
 
-const fetchPortfolio = async () => {
+const fetchPortfolioAPI = async () => {
     try {
       const portfolioResponse = await API.graphql(graphqlOperation(listPortfolios));
       const portfolio = portfolioResponse["data"]["listPortfolios"]["items"][0];
       console.log("Successfully fetched portfolio: ", portfolio);
       return portfolio;
-    } catch (error) {console.log("error in fetchAllUsers: " + error)}
+    } catch (error) {console.log("error in fetchPortfolio: " + error)}
+}
+
+const fetchOrdersAPI = async () => {
+  try {
+    const ordersResponse = await API.graphql(graphqlOperation(listOrders));
+    const orders = ordersResponse["data"]["listOrders"]["items"];
+    console.log("Successfully fetched orders: ", orders);
+    return orders;
+  } catch (error) {console.log("error in fetchOrdersAPI: " + error)}
 }
 
 const fetchWatchlistsAPI = async (portfolioId) => {
@@ -36,6 +45,21 @@ const fetchManySecuritiesAPI = async (securityIds) => {
     console.log("Successfully fetched watchlist's securities: ", securities);
     return securities;
   } catch (error) {console.log("error in fetchManySecuritiesAPI: ", error)}
+}
+
+const fetchAllSecuritiesAPI = async (portfolioId) => {
+  try {
+    const securitiesResponse = await API.graphql(
+      graphqlOperation(listSecurities, {
+        filter: {
+          portfolioId: { eq: portfolioId },
+        },
+      })
+    );
+    const securities = securitiesResponse["data"]["listSecurities"]["items"];
+    console.log("Successfully fetched securities: ", securities);
+    return securities;
+  } catch (error) {console.log("error in fetchAllSecuritiesAPI: ", error)}
 }
 
 const fetchAllSecurityTradesAPI = async (securityId) => {
@@ -191,8 +215,10 @@ const createNewTrade = async (security, selectedTradeType) => {
   return trade;
 };
 
-const createNewOrder = async (newTrade, date, tradeType, shares, price) => {
+const createNewOrder = async (security, newTrade, date, tradeType, shares, price) => {
   const newOrder = {
+    securityId: security.id,
+    symbol: security.symbol,
     tradeId: newTrade.id,
     createdAt: date,
     type: tradeType,
@@ -287,7 +313,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
       console.log("Creating a new trade");
 
       const newTrade = await createNewTrade(security, selectedTradeType, shares);
-      const newOrder = await createNewOrder(newTrade, date, selectedTradeType, shares, price);
+      const newOrder = await createNewOrder(security, newTrade, date, selectedTradeType, shares, price);
   
       await createShares(newTrade.id, newOrder.id, date, price, shares);
 
@@ -301,7 +327,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
       const numOpenShares = openShares.length;
 
       if (openTrade.type === selectedTradeType) {
-        const newOrder = await createNewOrder(openTrade, date, selectedTradeType, shares, price);
+        const newOrder = await createNewOrder(security, openTrade, date, selectedTradeType, shares, price);
         await createShares(openTrade.id, newOrder.id, date, price, shares);
         console.log("Increased position. Trade is still open.")
         return openTrade;
@@ -312,7 +338,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
           return openTrade;
         }
         // Submit Order
-        await createNewOrder(openTrade, date, selectedTradeType, shares, price);
+        await createNewOrder(security, openTrade, date, selectedTradeType, shares, price);
         // Close the specified number of open shares
         // HERE IS THE ISSUE< THIS OR UPDATE CLOSED SHARES
         const updatedShares = closeShares(openShares, shares, price, date);
@@ -339,9 +365,11 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
 };
 
 export {
-    fetchPortfolio,
+    fetchPortfolioAPI,
+    fetchOrdersAPI,
     fetchWatchlistsAPI,
     fetchManySecuritiesAPI,
+    fetchAllSecuritiesAPI,
     fetchAllSecurityTradesAPI,
     fetchSharesByTradeIdAPI,
     createPortfolioAPI,
