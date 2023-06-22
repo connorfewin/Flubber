@@ -5,7 +5,7 @@ import OrderHistory from "../Components/OrderHistory";
 
 const HomePage = () => {
     return(
-        <div className="root-container">
+        <div className="homepage-container">
             <DisplayWatchlist />
             <OrderHistory />
         </div>

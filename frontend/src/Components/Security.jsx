@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { fetchAllSecurityTradesAPI, fetchSharesByTradeIdAPI, updateSecurityIsOpenAPI } from "../api";
 import NewTrade from "./NewTrade";
 
@@ -10,9 +10,9 @@ const Security = (props) => {
   const [numShares, setNumShares] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
 
-  const updateSecurityIsOpen = async (flag) => {
+  const updateSecurityIsOpen = useCallback(async (flag) => {
     updateSecurityIsOpenAPI(security.id, flag);
-  };
+  }, [security.id]);
 
   useEffect(() => {
     const fetchTrades = async () => {
@@ -46,14 +46,14 @@ const Security = (props) => {
       setNumShares(openShares.length);
     };
 
-    if (openTrade && openTrade !== null){
+    if (openTrade && openTrade !== null) {
       updateSecurityIsOpen(true);
       fetchNumShares();
     } else {
       updateSecurityIsOpen(false);
       setNumShares(null);
     }
-  }, [openTradeUpdate]);
+  }, [openTradeUpdate, openTrade, updateSecurityIsOpen]);
 
   // Function to update openTrade and trigger the effect
   const updateOpenTrade = (newOpenTrade) => {
