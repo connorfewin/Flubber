@@ -139,6 +139,7 @@ export const getSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -159,6 +160,7 @@ export const listSecurities = /* GraphQL */ `
         portfolioId
         portfolioAllocation
         profitAllocation
+        recognizedProfit
         isOpen
         currentPrice
         createdAt
@@ -244,6 +246,7 @@ export const getShare = /* GraphQL */ `
   query GetShare($id: ID!) {
     getShare(id: $id) {
       id
+      securityId
       tradeId
       orderId
       isOpen
@@ -264,6 +267,7 @@ export const listShares = /* GraphQL */ `
     listShares(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        securityId
         tradeId
         orderId
         isOpen

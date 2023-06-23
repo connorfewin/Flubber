@@ -201,6 +201,7 @@ export const createSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -219,6 +220,7 @@ export const updateSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -237,6 +239,7 @@ export const deleteSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -356,6 +359,7 @@ export const createShare = /* GraphQL */ `
   ) {
     createShare(input: $input, condition: $condition) {
       id
+      securityId
       tradeId
       orderId
       isOpen
@@ -374,6 +378,7 @@ export const updateShare = /* GraphQL */ `
   ) {
     updateShare(input: $input, condition: $condition) {
       id
+      securityId
       tradeId
       orderId
       isOpen
@@ -392,6 +397,7 @@ export const deleteShare = /* GraphQL */ `
   ) {
     deleteShare(input: $input, condition: $condition) {
       id
+      securityId
       tradeId
       orderId
       isOpen

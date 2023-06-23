@@ -77,6 +77,22 @@ const fetchAllSecurityTradesAPI = async (securityId) => {
   } catch (error) {console.log("error in fetchAllSecurityTradesAPI: ", error)}
 }
 
+const fetchClosedSecurityTradesAPI = async (securityId) => {
+  try {
+    const tradesResponse = await API.graphql(
+      graphqlOperation(listTrades, {
+        filter: {
+          securityId: { eq: securityId },
+          isOpen: { eq: false },
+        },
+      })
+    );
+    const trades = tradesResponse.data.listTrades.items;
+    console.log("Successfully fetched security's trade: ", trades);
+    return trades;
+  } catch (error) {console.log("error in fetchAllSecurityTradesAPI: ", error)}
+}
+
 const fetchSharesByTradeIdAPI = async (tradeId) => {
   try {
     const sharesResponse = await API.graphql(
@@ -92,6 +108,24 @@ const fetchSharesByTradeIdAPI = async (tradeId) => {
     console.log("Error in fetchSharesByTradeIdAPI", error)
   }
 };
+
+const fetchClosedSharesByTradeIdAPI = async (tradeId) => {
+  try {
+    const sharesResponse = await API.graphql(
+      graphqlOperation(listShares, {
+        filter: {
+          tradeId: { eq: tradeId },
+          isOpen: { eq: false },
+        },
+      })
+    );
+    const shares = sharesResponse.data.listShares.items;
+    return shares;
+  } catch (error) {
+    console.log("Error in fetchSharesByTradeIdAPI", error)
+  }
+};
+
 
 const createPortfolioAPI = async (startingCapital, createdAt) => {
     try {
@@ -233,11 +267,12 @@ const createNewOrder = async (security, newTrade, date, tradeType, shares, price
   return order;
 };
 
-const createShares = async (tradeId, orderId, date, price, shares) => {
+const createShares = async (security, trade, order, date, price, shares) => {
   const newShares = Array.from({ length: shares }, (_, index) => ({
     createdAt: date,
-    tradeId: tradeId,
-    orderId: orderId,
+    securityId: security.id,
+    tradeId: trade.id,
+    orderId: order.id,
     entryPrice: price,
     isOpen: true,
   }));
@@ -315,7 +350,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
       const newTrade = await createNewTrade(security, selectedTradeType, shares);
       const newOrder = await createNewOrder(security, newTrade, date, selectedTradeType, shares, price);
   
-      await createShares(newTrade.id, newOrder.id, date, price, shares);
+      await createShares(security, newTrade, newOrder, date, price, shares);
 
       return newTrade;
     } else {
@@ -328,7 +363,7 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
 
       if (openTrade.type === selectedTradeType) {
         const newOrder = await createNewOrder(security, openTrade, date, selectedTradeType, shares, price);
-        await createShares(openTrade.id, newOrder.id, date, price, shares);
+        await createShares(security, openTrade, newOrder, date, price, shares);
         console.log("Increased position. Trade is still open.")
         return openTrade;
       } else {
@@ -337,15 +372,14 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
           console.log("Invalid number of shares");
           return openTrade;
         }
-        // Submit Order
-        await createNewOrder(security, openTrade, date, selectedTradeType, shares, price);
         // Close the specified number of open shares
         // HERE IS THE ISSUE< THIS OR UPDATE CLOSED SHARES
         const updatedShares = closeShares(openShares, shares, price, date);
         const recentlyClosedShares = updatedShares.filter(item => !item.isOpen);
         // Update the closed shares in the database
         await updateClosedShares(recentlyClosedShares); //
-
+        // Submit Order
+        await createNewOrder(security, openTrade, date, selectedTradeType, shares, price);
         // Check if there are remaining open shares
         const stillOpenShares = updatedShares.filter(item => item.isOpen);
         // If there are no more open shares, close the trade
@@ -364,6 +398,31 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
   }
 };
 
+const calculateRecognizedProfitAPI = async (securityId) => {
+  try {
+    // get security
+    const securityResponse = await API.graphql(graphqlOperation(getSecurity, {id: securityId}));
+    const security = securityResponse.data.getSecurity;
+    // fetch closed shares
+    const tradesResponse = await fetchAllSecurityTradesAPI(securityId);
+    let recognizedProfit = 0;
+    for (const trade of tradesResponse) {
+      const shares = await fetchClosedSharesByTradeIdAPI(trade.id);
+      for (const share of shares) {
+        if (trade.type === 'Buy') {
+          recognizedProfit += share.exitPrice - share.entryPrice;
+        } else {
+          recognizedProfit -= share.entryPrice - share.exitPrice;
+        }
+      }
+    }
+    return recognizedProfit;
+  } catch (error) {
+    console.log("error in calculateRecognizedProfit: ", error);
+  }
+};
+
+
 export {
     fetchPortfolioAPI,
     fetchOrdersAPI,
@@ -371,10 +430,13 @@ export {
     fetchManySecuritiesAPI,
     fetchAllSecuritiesAPI,
     fetchAllSecurityTradesAPI,
+    fetchClosedSecurityTradesAPI,
     fetchSharesByTradeIdAPI,
+    fetchClosedSharesByTradeIdAPI,
     createPortfolioAPI,
     createGoalAPI,  
     createWatchlistAPI,
     updateSecurityIsOpenAPI,  
     executeTrade,
+    calculateRecognizedProfitAPI,
 }

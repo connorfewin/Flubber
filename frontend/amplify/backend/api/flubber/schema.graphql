@@ -40,6 +40,7 @@ type Security @model {
   portfolioId: String!
   portfolioAllocation: Float
   profitAllocation: Float
+  recognizedProfit: Float
   isOpen: Boolean!
   currentPrice: Float
 }
@@ -66,6 +67,7 @@ type Order @model {
 
 type Share @model {
   id: ID!
+  securityId: String!
   tradeId: String!
   orderId: String!
   isOpen: Boolean!

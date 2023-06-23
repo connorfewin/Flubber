@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { fetchAllSecurityTradesAPI, fetchSharesByTradeIdAPI, updateSecurityIsOpenAPI } from "../api";
+
+import { API, graphqlOperation } from "aws-amplify";
+import {
+  fetchAllSecurityTradesAPI,
+  fetchSharesByTradeIdAPI,
+  updateSecurityIsOpenAPI,
+  calculateRecognizedProfitAPI
+} from "../api";
+import { onCreateOrder } from "../graphql/subscriptions";
 import NewTrade from "./NewTrade";
 
 const Security = (props) => {
@@ -9,11 +17,24 @@ const Security = (props) => {
   const [openTradeUpdate, setOpenTradeUpdate] = useState(false);
   const [numShares, setNumShares] = useState(null);
   const [showNewTrade, setShowNewTrade] = useState(false);
+  const [recognizedProfit, setRecognizedProfit] = useState(0);
 
-  const updateSecurityIsOpen = useCallback(async (flag) => {
-    updateSecurityIsOpenAPI(security.id, flag);
+  const updateSecurityIsOpen = useCallback(
+    async (flag) => {
+      updateSecurityIsOpenAPI(security.id, flag);
+    },
+    [security.id]
+  );
+
+  // fetchRecognizedProfit
+  useEffect(() => {
+    const fetchRecognizedProfit = async () => {
+      const recognizedProfitResponse = await calculateRecognizedProfitAPI(security.id);
+      setRecognizedProfit(recognizedProfitResponse);
+    };
+    fetchRecognizedProfit();
   }, [security.id]);
-
+  // fetchTrades
   useEffect(() => {
     const fetchTrades = async () => {
       const tradesResponse = await fetchAllSecurityTradesAPI(security.id);
@@ -26,6 +47,7 @@ const Security = (props) => {
     fetchTrades();
   }, [setTrades, security.id, security.symbol]);
 
+  // open trade
   useEffect(() => {
     const openTrades = (trades ?? []).filter((trade) => trade.isOpen === true);
     if (openTrades.length > 1) {
@@ -37,12 +59,13 @@ const Security = (props) => {
     }
   }, [trades, security.symbol]);
 
+  // fetchNumShares
   useEffect(() => {
-    console.log('UPDATE NUM SHARES');
+    console.log("UPDATE NUM SHARES");
     const fetchNumShares = async () => {
       console.log("open trade: ", openTrade);
-      const shares = await fetchSharesByTradeIdAPI(openTrade.id)
-      const openShares = shares.filter(item => item.isOpen);
+      const shares = await fetchSharesByTradeIdAPI(openTrade.id);
+      const openShares = shares.filter((item) => item.isOpen);
       setNumShares(openShares.length);
     };
 
@@ -57,10 +80,35 @@ const Security = (props) => {
 
   // Function to update openTrade and trigger the effect
   const updateOpenTrade = (newOpenTrade) => {
-    console.log('update Open Trade')
+    console.log("update Open Trade");
     setOpenTrade(newOpenTrade);
-    setOpenTradeUpdate(prev => !prev); // Toggle the value of openTradeUpdate
+    setOpenTradeUpdate((prev) => !prev); // Toggle the value of openTradeUpdate
   };
+
+  // onCreateOrder subscription
+  useEffect(() => {
+    const calculateRecognizedProfit = async (securityId) => {
+      const recognizedProfitResponse = await calculateRecognizedProfitAPI(securityId);
+      setRecognizedProfit(recognizedProfitResponse);
+    }
+    const subscription = API.graphql(graphqlOperation(onCreateOrder)).subscribe(
+      {
+        next: (eventData) => {
+          const updatedOrder = eventData.value.data.onCreateOrder;
+          if(updatedOrder.securityId === security.id){
+            calculateRecognizedProfit(updatedOrder.securityId);
+          }
+        },
+        error: (error) => {
+          console.error("Subscription error:", error);
+        },
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [security.id]);
 
   const handleNewTradeClick = () => {
     setShowNewTrade(true);
@@ -74,7 +122,9 @@ const Security = (props) => {
           !security.isOpen ? "security-item-closed" : ""
         }`}
       >
-        <p>Symbol: {security.symbol}</p>
+        <h3 style={{ textAlign: "center" }}>
+          {security.symbol}{"   $"}{recognizedProfit}
+        </h3>
         <p>Current Price: ${security.currentPrice}</p>
         {numShares != null && <p>Shares: {numShares}</p>}
         {showNewTrade ? (

@@ -15,9 +15,9 @@ const DisplayWatchlist = () => {
   const [portfolio, setPortfolio] = useState("");
   const [watchlist, setWatchlist] = useState([]);
   const [securities, setSecurities] = useState([]);
-  const [updateSecuritiesTrigger, setUpdateSecuritiesTrigger] = useState(false)
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
 
+  // fetchWatchlists
   useEffect(() => {
     const fetchWatchlists = async () => {
       const portfolioResponse = await fetchPortfolioAPI();
@@ -32,6 +32,7 @@ const DisplayWatchlist = () => {
     fetchWatchlists();
   }, [portfolio.id]);
 
+  // fetchSecurities
   useEffect(() => {
     const fetchSecurities = async () => {
       if (selectedWatchlist && selectedWatchlist.securityIds.length > 0) {
@@ -45,7 +46,7 @@ const DisplayWatchlist = () => {
     fetchSecurities();
   }, [selectedWatchlist]);
 
-  // Subscription to listen for updated securities
+  // onUpdateSecurity Subscription
   useEffect(() => {
     const subscription = API.graphql(
       graphqlOperation(onUpdateSecurity)

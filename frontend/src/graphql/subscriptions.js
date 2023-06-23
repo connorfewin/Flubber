@@ -180,6 +180,7 @@ export const onCreateSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -195,6 +196,7 @@ export const onUpdateSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -210,6 +212,7 @@ export const onDeleteSecurity = /* GraphQL */ `
       portfolioId
       portfolioAllocation
       profitAllocation
+      recognizedProfit
       isOpen
       currentPrice
       createdAt
@@ -308,6 +311,7 @@ export const onCreateShare = /* GraphQL */ `
   subscription OnCreateShare($filter: ModelSubscriptionShareFilterInput) {
     onCreateShare(filter: $filter) {
       id
+      securityId
       tradeId
       orderId
       isOpen
@@ -323,6 +327,7 @@ export const onUpdateShare = /* GraphQL */ `
   subscription OnUpdateShare($filter: ModelSubscriptionShareFilterInput) {
     onUpdateShare(filter: $filter) {
       id
+      securityId
       tradeId
       orderId
       isOpen
@@ -338,6 +343,7 @@ export const onDeleteShare = /* GraphQL */ `
   subscription OnDeleteShare($filter: ModelSubscriptionShareFilterInput) {
     onDeleteShare(filter: $filter) {
       id
+      securityId
       tradeId
       orderId
       isOpen

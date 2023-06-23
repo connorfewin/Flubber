@@ -13,6 +13,7 @@ const OrderHistory = () => {
     pageIndex: 0,
     pageSize: 5, //customize the default page size
   });
+  
   // set orders from the db
   useEffect(() => {
     const fetchOrders = async () => {
