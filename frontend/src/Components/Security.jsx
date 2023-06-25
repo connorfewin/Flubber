@@ -10,6 +10,7 @@ import {
 import { onCreateOrder } from "../graphql/subscriptions";
 import NewTrade from "./NewTrade";
 import MockTradeInfo from "./MockTradeInfo";
+import CurrentTradeInfo from "./CurrentTradeInfo";
 
 const Security = (props) => {
   const { security } = props;
@@ -133,9 +134,17 @@ const Security = (props) => {
           {recognizedProfit}
         </h2>
         {security.isOpen ? (
-          <h3 style={{ textAlign: "left" }}>${security.currentPrice}</h3>
+          <CurrentTradeInfo
+            price={security.currentPrice}
+            recognizedProfit={recognizedProfit}
+            numShares={numShares}
+            openTrade={openTrade}
+          />
         ) : (
-          <MockTradeInfo price={security.currentPrice} recognizedProfit={recognizedProfit}/>
+          <MockTradeInfo
+            price={security.currentPrice}
+            recognizedProfit={recognizedProfit}
+          />
         )}
 
         {numShares != null && <p>Shares: {numShares}</p>}

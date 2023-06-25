@@ -400,9 +400,6 @@ const executeTrade = async (security, openTrade, date, price, shares, selectedTr
 
 const calculateRecognizedProfitAPI = async (securityId) => {
   try {
-    // get security
-    const securityResponse = await API.graphql(graphqlOperation(getSecurity, {id: securityId}));
-    const security = securityResponse.data.getSecurity;
     // fetch closed shares
     const tradesResponse = await fetchAllSecurityTradesAPI(securityId);
     let recognizedProfit = 0;
@@ -412,7 +409,7 @@ const calculateRecognizedProfitAPI = async (securityId) => {
         if (trade.type === 'Buy') {
           recognizedProfit += share.exitPrice - share.entryPrice;
         } else {
-          recognizedProfit -= share.entryPrice - share.exitPrice;
+          recognizedProfit += share.entryPrice - share.exitPrice;
         }
       }
     }
