@@ -110,7 +110,6 @@ const DisplayWatchlist = () => {
       </div>
       {securities.length > 0 && (
         <div className="securities-list">
-          <h3>Securities:</h3>
           <div className="securities-row">
             {securities.map((security) => (
                 <Security key={security.id} security={security} />

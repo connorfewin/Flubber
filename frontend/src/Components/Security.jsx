@@ -5,10 +5,11 @@ import {
   fetchAllSecurityTradesAPI,
   fetchSharesByTradeIdAPI,
   updateSecurityIsOpenAPI,
-  calculateRecognizedProfitAPI
+  calculateRecognizedProfitAPI,
 } from "../api";
 import { onCreateOrder } from "../graphql/subscriptions";
 import NewTrade from "./NewTrade";
+import MockTradeInfo from "./MockTradeInfo";
 
 const Security = (props) => {
   const { security } = props;
@@ -29,7 +30,9 @@ const Security = (props) => {
   // fetchRecognizedProfit
   useEffect(() => {
     const fetchRecognizedProfit = async () => {
-      const recognizedProfitResponse = await calculateRecognizedProfitAPI(security.id);
+      const recognizedProfitResponse = await calculateRecognizedProfitAPI(
+        security.id
+      );
       setRecognizedProfit(recognizedProfitResponse);
     };
     fetchRecognizedProfit();
@@ -88,14 +91,16 @@ const Security = (props) => {
   // onCreateOrder subscription
   useEffect(() => {
     const calculateRecognizedProfit = async (securityId) => {
-      const recognizedProfitResponse = await calculateRecognizedProfitAPI(securityId);
+      const recognizedProfitResponse = await calculateRecognizedProfitAPI(
+        securityId
+      );
       setRecognizedProfit(recognizedProfitResponse);
-    }
+    };
     const subscription = API.graphql(graphqlOperation(onCreateOrder)).subscribe(
       {
         next: (eventData) => {
           const updatedOrder = eventData.value.data.onCreateOrder;
-          if(updatedOrder.securityId === security.id){
+          if (updatedOrder.securityId === security.id) {
             calculateRecognizedProfit(updatedOrder.securityId);
           }
         },
@@ -122,10 +127,17 @@ const Security = (props) => {
           !security.isOpen ? "security-item-closed" : ""
         }`}
       >
-        <h3 style={{ textAlign: "center" }}>
-          {security.symbol}{"   $"}{recognizedProfit}
-        </h3>
-        <p>Current Price: ${security.currentPrice}</p>
+        <h2 style={{ textAlign: "center" }}>
+          {security.symbol}
+          {"   $"}
+          {recognizedProfit}
+        </h2>
+        {security.isOpen ? (
+          <h3 style={{ textAlign: "left" }}>${security.currentPrice}</h3>
+        ) : (
+          <MockTradeInfo price={security.currentPrice} recognizedProfit={recognizedProfit}/>
+        )}
+
         {numShares != null && <p>Shares: {numShares}</p>}
         {showNewTrade ? (
           <NewTrade

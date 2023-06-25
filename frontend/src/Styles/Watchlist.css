@@ -25,7 +25,7 @@
   }
   
   .new-watchlist-button {
-    margin-left: 10px;
+    margin-left: 0px;
     padding: 10px 20px;
     /* Add desired padding value */
     font-size: 15px;
@@ -47,6 +47,10 @@
     outline: none;
   }
   
+.securities-list {
+  padding-top: 30px;
+}
+
   .securities-row {
     display: flex;
     flex-wrap: wrap;
