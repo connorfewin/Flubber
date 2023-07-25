@@ -8,7 +8,7 @@ import {
 import { API, graphqlOperation } from "aws-amplify";
 import { onUpdateSecurity } from "../graphql/subscriptions";
 import "../Styles/Watchlist.css";
-import Security from "./Security";
+import Security from "../Components/Security";
 
 const DisplayWatchlist = () => {
   const navigate = useNavigate();

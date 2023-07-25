@@ -25,7 +25,7 @@
   }
   
   .new-watchlist-button {
-    margin-left: 0px;
+    margin-left: 10px;
     padding: 10px 20px;
     /* Add desired padding value */
     font-size: 15px;
@@ -66,8 +66,12 @@
     /* Add desired margin-right value */
     margin-bottom: 10px;
     /* Add desired margin-bottom value */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
     /* Add desired box shadow value */
+  }
+
+  .security-item-open:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.35);
   }
 
   .security-item-closed {

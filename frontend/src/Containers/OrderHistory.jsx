@@ -60,22 +60,22 @@ const OrderHistory = () => {
       {
         accessorKey: "createdAt",
         header: "Date",
-        size: 150,
+        size: 100,
       },
       {
         accessorKey: "symbol",
         header: "Symbol",
-        size: 150,
+        size: 100,
       },
       {
         accessorKey: "type",
         header: "Type",
-        size: 150,
+        size: 100,
       },
       {
         accessorKey: "numShares",
         header: "Shares",
-        size: 150,
+        size: 10,
       },
       {
         accessorKey: "price",
