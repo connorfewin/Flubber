@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  fetchPortfolioAPI,
   fetchWatchlistsAPI,
   fetchManySecuritiesAPI,
 } from "../api";
@@ -10,9 +9,8 @@ import { onUpdateSecurity } from "../graphql/subscriptions";
 import "../Styles/Watchlist.css";
 import Security from "../Components/Security";
 
-const DisplayWatchlist = () => {
+const DisplayWatchlist = ({portfolio}) => {
   const navigate = useNavigate();
-  const [portfolio, setPortfolio] = useState("");
   const [watchlist, setWatchlist] = useState([]);
   const [securities, setSecurities] = useState([]);
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
@@ -20,9 +18,7 @@ const DisplayWatchlist = () => {
   // fetchWatchlists
   useEffect(() => {
     const fetchWatchlists = async () => {
-      const portfolioResponse = await fetchPortfolioAPI();
-      setPortfolio(portfolioResponse);
-      const watchlistResponse = await fetchWatchlistsAPI(portfolio.id);
+      const watchlistResponse = await fetchWatchlistsAPI(portfolio?.id);
       setWatchlist(watchlistResponse);
       setSelectedWatchlist(
         watchlistResponse.length === 1 ? watchlistResponse[0] : null

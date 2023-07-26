@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { getSecurity, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
-import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade } from './graphql/mutations';
+import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio } from './graphql/mutations';
 
 const fetchPortfolioAPI = async () => {
     try {
@@ -127,17 +127,13 @@ const fetchClosedSharesByTradeIdAPI = async (tradeId) => {
 };
 
 
-const createPortfolioAPI = async (startingCapital, createdAt) => {
+const createPortfolioAPI = async (initialValue, createdAt) => {
     try {
         const newPortfolio = {
             createdAt: createdAt,
-            securityIds: [],
-            startingCapital: startingCapital,
-            capital: startingCapital,
-            profit: 0.0,
-            goalIds: [],
-            watchlistIds: [],
-            bankTransferIds: [],
+            initialValue: initialValue,
+            currentValue: initialValue,
+            recognizedProfit: 0.0,
         }
         const portfolioResponse = await API.graphql(graphqlOperation(createPortfolio, {input : newPortfolio}));
         const portfolio = portfolioResponse.data.createPortfolio
@@ -222,6 +218,20 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
+
+const updatePortfolioCurrentValueAPI = async (id, newCurrentValue) => {
+  console.log("portfolio: ", id);
+  console.log("curent Value: ", newCurrentValue);
+  try{
+    await API.graphql(
+      graphqlOperation(updatePortfolio, {
+        input: { id: id, currentValue: newCurrentValue },
+      })
+    );
+    console.log("Successfully updated portfolios current value");
+  } catch (error) {console.log("error in updatePortfolioCurrentValueAPI: ", error)}
+}
+
 const updateSecurityIsOpenAPI = async (id, isOpen) => {
   console.log("user: ", id);
   console.log("IsOpen: ", isOpen);
@@ -413,7 +423,7 @@ const calculateRecognizedProfitAPI = async (securityId) => {
         }
       }
     }
-    return recognizedProfit;
+    return recognizedProfit.toFixed(2);
   } catch (error) {
     console.log("error in calculateRecognizedProfit: ", error);
   }
@@ -433,6 +443,7 @@ export {
     createPortfolioAPI,
     createGoalAPI,  
     createWatchlistAPI,
+    updatePortfolioCurrentValueAPI,
     updateSecurityIsOpenAPI,  
     executeTrade,
     calculateRecognizedProfitAPI,

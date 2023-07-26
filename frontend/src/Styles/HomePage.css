@@ -16,9 +16,9 @@ body{
 }
 
 .orderHistory-container {
-  max-width: 50%;
+  min-width: 50%;
 }
 
 .displayWatchlsit-container {
-  align-items: start;
+  align-items: center;
 }

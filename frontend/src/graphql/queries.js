@@ -6,10 +6,9 @@ export const getPortfolio = /* GraphQL */ `
     getPortfolio(id: $id) {
       id
       createdAt
-      securityIds
-      startingCapital
-      capital
-      profit
+      initialValue
+      currentValue
+      recognizedProfit
       updatedAt
     }
   }
@@ -24,10 +23,9 @@ export const listPortfolios = /* GraphQL */ `
       items {
         id
         createdAt
-        securityIds
-        startingCapital
-        capital
-        profit
+        initialValue
+        currentValue
+        recognizedProfit
         updatedAt
       }
       nextToken
@@ -104,6 +102,7 @@ export const getGoal = /* GraphQL */ `
       isOpen
       createdAt
       initialPortfolioValue
+      finalPortfolioValue
       growthGoal
       endDate
       updatedAt
@@ -123,6 +122,7 @@ export const listGoals = /* GraphQL */ `
         isOpen
         createdAt
         initialPortfolioValue
+        finalPortfolioValue
         growthGoal
         endDate
         updatedAt

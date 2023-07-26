@@ -5,10 +5,9 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 type Portfolio @model {
   id: ID!
   createdAt: String!
-  securityIds: [String]
-  startingCapital: Float!
-  capital: Float
-  profit: Float
+  initialValue: Float!
+  currentValue: Float
+  recognizedProfit: Float
 }
 type BankTransfer @model {
   id: ID!
@@ -30,6 +29,7 @@ type Goal @model {
   isOpen: Boolean!
   createdAt: String!
   initialPortfolioValue: Float!
+  finalPortfolioValue: Float
   growthGoal: Float!
   endDate: String
 }

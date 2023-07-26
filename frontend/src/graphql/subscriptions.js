@@ -8,10 +8,9 @@ export const onCreatePortfolio = /* GraphQL */ `
     onCreatePortfolio(filter: $filter) {
       id
       createdAt
-      securityIds
-      startingCapital
-      capital
-      profit
+      initialValue
+      currentValue
+      recognizedProfit
       updatedAt
     }
   }
@@ -23,10 +22,9 @@ export const onUpdatePortfolio = /* GraphQL */ `
     onUpdatePortfolio(filter: $filter) {
       id
       createdAt
-      securityIds
-      startingCapital
-      capital
-      profit
+      initialValue
+      currentValue
+      recognizedProfit
       updatedAt
     }
   }
@@ -38,10 +36,9 @@ export const onDeletePortfolio = /* GraphQL */ `
     onDeletePortfolio(filter: $filter) {
       id
       createdAt
-      securityIds
-      startingCapital
-      capital
-      profit
+      initialValue
+      currentValue
+      recognizedProfit
       updatedAt
     }
   }
@@ -138,6 +135,7 @@ export const onCreateGoal = /* GraphQL */ `
       isOpen
       createdAt
       initialPortfolioValue
+      finalPortfolioValue
       growthGoal
       endDate
       updatedAt
@@ -152,6 +150,7 @@ export const onUpdateGoal = /* GraphQL */ `
       isOpen
       createdAt
       initialPortfolioValue
+      finalPortfolioValue
       growthGoal
       endDate
       updatedAt
@@ -166,6 +165,7 @@ export const onDeleteGoal = /* GraphQL */ `
       isOpen
       createdAt
       initialPortfolioValue
+      finalPortfolioValue
       growthGoal
       endDate
       updatedAt

@@ -1,0 +1,44 @@
+/* styles.css */
+
+/* Center the content in the container */
+.porfolioValue-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Style the portfolio header and edit container */
+  .portfolioHeader, .editPortfolio-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style the input and submit button */
+  .portfolioHeader input {
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .portfolioHeader button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Style the h1 element */
+  .editPortfolio-container h1 {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  /* Style the edit button */
+  .editPortfolio-container button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  

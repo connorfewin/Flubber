@@ -37,8 +37,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-flubber-dev-112013-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiflubber"
       },
-      "lastPushTimeStamp": "2023-06-23T19:59:31.880Z",
-      "lastPushDirHash": "cEFYSZU2AeyGRdXvuQV8oeef5Jc="
+      "lastPushTimeStamp": "2023-07-26T17:21:08.539Z",
+      "lastPushDirHash": "h5kmFVcw9eMQHMQ2ao8k8391UDU="
     }
   }
 }
