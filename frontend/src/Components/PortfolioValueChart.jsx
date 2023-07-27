@@ -60,6 +60,7 @@ function CustomTooltip({ payload, label, active }) {
   if (active) {
     return (
       <div className="custom-tooltip">
+        <p className="dateLabel"> {label}</p>
         <p className="bankTransferLabel">{`Bank Transfer Value: $${payload[2].value.toLocaleString(
           "en-US",
           { minimumFractionDigits: 2 }
@@ -72,11 +73,11 @@ function CustomTooltip({ payload, label, active }) {
           "en-US",
           { minimumFractionDigits: 2 }
         )}`}</p>
-        <p className="totalLabel">{`Total: $${(
+        <h4 className="totalLabel">{`Total: $${(
           payload[0].value +
           payload[1].value +
           payload[2].value
-        ).toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
+        ).toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</h4>
       </div>
     );
   }

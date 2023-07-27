@@ -5,6 +5,7 @@
     border-radius: 5px; /* Add rounded corners for a nicer appearance */
 }
 
+.dateLabel,
 .bankTransferLabel,
 .tradingProfitLabel,
 .initialValueLabel,
