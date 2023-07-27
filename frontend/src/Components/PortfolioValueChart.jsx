@@ -102,7 +102,7 @@ const PortfolioValueChart = ({ portfolio }) => {
 
   return (
     <>
-      <h2>Portfolio Value</h2>
+      <h2>Recognized Portfolio Value</h2>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart
           width={700} // The chart width is set to 100% of the container
