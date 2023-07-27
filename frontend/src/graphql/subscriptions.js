@@ -227,6 +227,7 @@ export const onCreateTrade = /* GraphQL */ `
       securityId
       isOpen
       type
+      recognizedProfit
       goalId
       moneyInvested
       createdAt
@@ -241,6 +242,7 @@ export const onUpdateTrade = /* GraphQL */ `
       securityId
       isOpen
       type
+      recognizedProfit
       goalId
       moneyInvested
       createdAt
@@ -255,6 +257,7 @@ export const onDeleteTrade = /* GraphQL */ `
       securityId
       isOpen
       type
+      recognizedProfit
       goalId
       moneyInvested
       createdAt
@@ -319,6 +322,7 @@ export const onCreateShare = /* GraphQL */ `
       closedAt
       entryPrice
       exitPrice
+      recognizedProfit
       updatedAt
     }
   }
@@ -335,6 +339,7 @@ export const onUpdateShare = /* GraphQL */ `
       closedAt
       entryPrice
       exitPrice
+      recognizedProfit
       updatedAt
     }
   }
@@ -351,6 +356,7 @@ export const onDeleteShare = /* GraphQL */ `
       closedAt
       entryPrice
       exitPrice
+      recognizedProfit
       updatedAt
     }
   }

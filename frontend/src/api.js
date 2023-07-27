@@ -340,6 +340,32 @@ const updateTradeStatus = async (trade) => {
   }
 };
 
+const updateTradeRecognizedProfitAPI = async (trade, recognizedProfit) => {
+  try {
+    await API.graphql(
+      graphqlOperation(updateTrade, {
+        input: { id: trade.id, recognizedProfit: recognizedProfit },
+      })
+    );
+    console.log("Successfully updated trade ", trade.id, " with a recognized profit of $", recognizedProfit);
+  } catch (error) {
+    console.log("Error in updateTradeRecognizedProfitAPI:", error);
+  }
+};
+
+const updateShareRecognizedProfitAPI = async (share, recognizedProfit) => {
+  try {
+    await API.graphql(
+      graphqlOperation(updateShare, {
+        input: { id: share.id, recognizedProfit: recognizedProfit },
+      })
+    );
+    console.log("Successfully updated share ", share.id, " with a recognized profit of $", recognizedProfit);
+  } catch (error) {
+    console.log("Error in updateShareRecognizedProfitAPI:", error);
+  }
+};
+
 const executeTrade = async (security, openTrade, date, price, shares, selectedTradeType) => {
 
   if (!price || !shares || !selectedTradeType || !date) {
@@ -414,15 +440,30 @@ const calculateRecognizedProfitAPI = async (securityId) => {
     const tradesResponse = await fetchAllSecurityTradesAPI(securityId);
     let recognizedProfit = 0;
     for (const trade of tradesResponse) {
+      let tradeReognizedProfit = 0;
       const shares = await fetchClosedSharesByTradeIdAPI(trade.id);
       for (const share of shares) {
+        let shareRecognizedProfit = 0;
         if (trade.type === 'Buy') {
-          recognizedProfit += share.exitPrice - share.entryPrice;
+          shareRecognizedProfit = share.exitPrice - share.entryPrice;
         } else {
-          recognizedProfit += share.entryPrice - share.exitPrice;
+          shareRecognizedProfit = share.entryPrice - share.exitPrice;
+        }
+        //update share recognized profit
+        tradeReognizedProfit += shareRecognizedProfit;
+        if(share.recognizedProfit !== shareRecognizedProfit){
+          console.log("Share Recognized Profit Did not match, updating to new value, check out: ", share.id);
+          await updateShareRecognizedProfitAPI(share, shareRecognizedProfit)
         }
       }
+      recognizedProfit += tradeReognizedProfit;
+      // Update Trades Recognized 
+      if(trade.recognizedProfit !== tradeReognizedProfit){
+        console.log("Trade Recognized Profit Did not match, updating to new value, check out: ", trade.id);
+        await updateTradeRecognizedProfitAPI(trade, tradeReognizedProfit)
+      }
     }
+    // Update Securities Recognized Profit
     return recognizedProfit.toFixed(2);
   } catch (error) {
     console.log("error in calculateRecognizedProfit: ", error);

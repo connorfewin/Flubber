@@ -50,6 +50,7 @@ type Trade @model {
   securityId: String!
   isOpen: Boolean!
   type: String!
+  recognizedProfit: Float
   goalId: String
   moneyInvested: Float
 }
@@ -75,4 +76,5 @@ type Share @model {
   closedAt: String
   entryPrice: Float!
   exitPrice: Float
+  recognizedProfit: Float
 }

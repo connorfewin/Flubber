@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import '../Styles/PortfolioValueChart.css'
 const data = [
@@ -32,7 +33,7 @@ function CustomTooltip({ payload, label, active }) {
     }
   
     return null;
-  }
+}
 
 const PortfolioValueChart = ({ portfolio }) => {
   return (
@@ -54,6 +55,7 @@ const PortfolioValueChart = ({ portfolio }) => {
           <XAxis dataKey="name" />
           <YAxis type="number" allowDataOverflow={true} domain={[8000, 12000]}/>
           <Tooltip content={<CustomTooltip />}/>
+          <Legend />
           <Area
             type="monotone"
             dataKey="intialValue"

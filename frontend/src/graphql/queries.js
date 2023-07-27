@@ -177,6 +177,7 @@ export const getTrade = /* GraphQL */ `
       securityId
       isOpen
       type
+      recognizedProfit
       goalId
       moneyInvested
       createdAt
@@ -196,6 +197,7 @@ export const listTrades = /* GraphQL */ `
         securityId
         isOpen
         type
+        recognizedProfit
         goalId
         moneyInvested
         createdAt
@@ -254,6 +256,7 @@ export const getShare = /* GraphQL */ `
       closedAt
       entryPrice
       exitPrice
+      recognizedProfit
       updatedAt
     }
   }
@@ -275,6 +278,7 @@ export const listShares = /* GraphQL */ `
         closedAt
         entryPrice
         exitPrice
+        recognizedProfit
         updatedAt
       }
       nextToken
