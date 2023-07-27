@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -9,33 +9,96 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import '../Styles/PortfolioValueChart.css'
-const data = [
-  { name: "Jan", intialValue: 9000, tradeProfit : 100, bankTransfer: 100 },
-  { name: "Feb", intialValue: 9000, tradeProfit: -150, bankTransfer: 200 },
-  { name: "Mar", intialValue: 9000, tradeProfit: 250, bankTransfer: 300 },
-  { name: "Apr", intialValue: 9000, tradeProfit: 500, bankTransfer: 400 },
-  { name: "May", intialValue: 9000, tradeProfit: 1000, bankTransfer: 500 },
-  { name: "Jun", intialValue: 9000, tradeProfit: 980, bankTransfer: 600 },
-  { name: "Jul", intialValue: 9000, tradeProfit: 1400, bankTransfer: 700 },
+import "../Styles/PortfolioValueChart.css";
+import { calculateChartDataAPI } from "../api";
+const sampleData = [
+  {
+    date: "2023-01-27",
+    intialValue: 9000,
+    tradeProfit: 100.68,
+    bankTransfer: 100,
+  },
+  {
+    date: "2023-02-27",
+    intialValue: 9000,
+    tradeProfit: -150.23,
+    bankTransfer: 200,
+  },
+  {
+    date: "2023-03-27",
+    intialValue: 9000,
+    tradeProfit: 250,
+    bankTransfer: 300,
+  },
+  {
+    date: "2023-04-27",
+    intialValue: 9000,
+    tradeProfit: 500.4444444444444455555345345253452,
+    bankTransfer: 400,
+  },
+  {
+    date: "2023-04-28",
+    intialValue: 9000,
+    tradeProfit: 1000,
+    bankTransfer: 500,
+  },
+  {
+    date: "2023-07-27",
+    intialValue: 9000,
+    tradeProfit: 980,
+    bankTransfer: 600,
+  },
+  {
+    date: "2023-10-27",
+    intialValue: 9000,
+    tradeProfit: 1400,
+    bankTransfer: 700,
+  },
 ];
 
 function CustomTooltip({ payload, label, active }) {
-    if (active) {
-      return (
-        <div className="custom-tooltip">
-       <p className="bankTransferLabel">{`Bank Transfer Value: $${payload[2].value.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
-        <p className="tradingProfitLabel">{`Trading Pofit: $${payload[1].value.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
-          <p className="initialValueLabel">{`Initial Value: $${payload[0].value.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
-          <p className="totalLabel">{`Total: $${(payload[0].value + payload[1].value + payload[2].value).toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
-        </div>
-      );
-    }
-  
-    return null;
+  if (active) {
+    return (
+      <div className="custom-tooltip">
+        <p className="bankTransferLabel">{`Bank Transfer Value: $${payload[2].value.toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2 }
+        )}`}</p>
+        <p className="tradingProfitLabel">{`Trading Pofit: $${payload[1].value.toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2 }
+        )}`}</p>
+        <p className="initialValueLabel">{`Initial Value: $${payload[0].value.toLocaleString(
+          "en-US",
+          { minimumFractionDigits: 2 }
+        )}`}</p>
+        <p className="totalLabel">{`Total: $${(
+          payload[0].value +
+          payload[1].value +
+          payload[2].value
+        ).toLocaleString("en-US", { minimumFractionDigits: 2 })}`}</p>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 const PortfolioValueChart = ({ portfolio }) => {
+  const [data, setData] = useState(sampleData);
+  // get the data for the area chart
+  useEffect(() => {
+    const getChartData = async () => {
+      const chartDataResponse = await calculateChartDataAPI(
+        portfolio.id,
+        portfolio.createdAt,
+        portfolio.initialValue
+      );
+      setData(chartDataResponse);
+    };
+    getChartData();
+  }, [portfolio.id, portfolio.createAt, portfolio.initialValue]);
+
   return (
     <>
       <h2>Portfolio Value</h2>
@@ -52,13 +115,17 @@ const PortfolioValueChart = ({ portfolio }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis type="number" allowDataOverflow={true} domain={[8000, 12000]}/>
-          <Tooltip content={<CustomTooltip />}/>
+          <XAxis dataKey="date" />
+          <YAxis
+            type="number"
+            allowDataOverflow={true}
+            domain={[8000, 12000]}
+          />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Area
             type="monotone"
-            dataKey="intialValue"
+            dataKey="initialValue" // It should be "initialValue" instead of "intialValue"
             stackId="1"
             stroke="#6D3CD8"
             strokeWidth={2}

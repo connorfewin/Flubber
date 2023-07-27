@@ -314,6 +314,7 @@ export const onCreateShare = /* GraphQL */ `
   subscription OnCreateShare($filter: ModelSubscriptionShareFilterInput) {
     onCreateShare(filter: $filter) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
@@ -331,6 +332,7 @@ export const onUpdateShare = /* GraphQL */ `
   subscription OnUpdateShare($filter: ModelSubscriptionShareFilterInput) {
     onUpdateShare(filter: $filter) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
@@ -348,6 +350,7 @@ export const onDeleteShare = /* GraphQL */ `
   subscription OnDeleteShare($filter: ModelSubscriptionShareFilterInput) {
     onDeleteShare(filter: $filter) {
       id
+      portfolioId
       securityId
       tradeId
       orderId

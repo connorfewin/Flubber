@@ -68,6 +68,7 @@ type Order @model {
 
 type Share @model {
   id: ID!
+  portfolioId: String
   securityId: String!
   tradeId: String!
   orderId: String!

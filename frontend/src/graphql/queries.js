@@ -248,6 +248,7 @@ export const getShare = /* GraphQL */ `
   query GetShare($id: ID!) {
     getShare(id: $id) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
@@ -270,6 +271,7 @@ export const listShares = /* GraphQL */ `
     listShares(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        portfolioId
         securityId
         tradeId
         orderId

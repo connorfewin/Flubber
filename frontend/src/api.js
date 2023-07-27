@@ -126,6 +126,23 @@ const fetchClosedSharesByTradeIdAPI = async (tradeId) => {
   }
 };
 
+const fetchClosedSharesByPortfolioIdAPI = async (portfolioId) => {
+  try {
+    const sharesResponse = await API.graphql(
+      graphqlOperation(listShares, {
+        filter: {
+          portfolioId: { eq: portfolioId },
+          isOpen: { eq: false },
+        },
+      })
+    );
+    const shares = sharesResponse.data.listShares.items;
+    console.log("Successfully fetched shares by portfolioId");
+    return shares;
+  } catch (error) {
+    console.log("Error in fetchSharesByTradeIdAPI", error)
+  }
+};
 
 const createPortfolioAPI = async (initialValue, createdAt) => {
     try {
@@ -279,6 +296,7 @@ const createNewOrder = async (security, newTrade, date, tradeType, shares, price
 
 const createShares = async (security, trade, order, date, price, shares) => {
   const newShares = Array.from({ length: shares }, (_, index) => ({
+    portfolioId: security.portfolioId,
     createdAt: date,
     securityId: security.id,
     tradeId: trade.id,
@@ -470,6 +488,60 @@ const calculateRecognizedProfitAPI = async (securityId) => {
   }
 };
 
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getDatesBetween(startDate, endDate) {
+  const dates = [];
+  const current = new Date(startDate);
+
+  while (current <= endDate) {
+    dates.push(formatDate(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return dates;
+}
+
+const calculateChartDataAPI = async (portfolioId, createdAt, initialValue) => {
+  try {
+    const data = [];
+      const shares = await fetchClosedSharesByPortfolioIdAPI(portfolioId);
+      console.log("Shares: ", shares);
+      const today = new Date();
+      const datesBetween = getDatesBetween(createdAt, today);
+      for (const date of datesBetween) {
+        const dateMatchingClosedShares = shares.filter((share) => share.closedAt === date);
+        let tradeProfit = 0;
+        let bankTransfer = 0
+        if(data.length !== 0){
+          tradeProfit = data[data.length - 1].tradeProfit;
+          bankTransfer = data[data.length - 1].bankTransfer;
+        }
+        for(const item of dateMatchingClosedShares) {
+          console.log(item.recognizedProfit)
+          tradeProfit += item.recognizedProfit;
+          if (tradeProfit !== 0) console.log("MATCHING DATE: ", date);
+        }
+        const newDataEntry = {
+          date: date.toString(),
+          initialValue: initialValue,
+          tradeProfit: tradeProfit,
+          bankTransfer: bankTransfer,
+        }
+        data.push(newDataEntry);
+      }
+      console.log("DATA: ", data);
+      return data;
+    }
+  catch (error) {
+    console.log("error in calculateChartDataAPI: ", error);
+  }
+};
 
 export {
     fetchPortfolioAPI,
@@ -488,4 +560,5 @@ export {
     updateSecurityIsOpenAPI,  
     executeTrade,
     calculateRecognizedProfitAPI,
+    calculateChartDataAPI,
 }

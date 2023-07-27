@@ -362,6 +362,7 @@ export const createShare = /* GraphQL */ `
   ) {
     createShare(input: $input, condition: $condition) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
@@ -382,6 +383,7 @@ export const updateShare = /* GraphQL */ `
   ) {
     updateShare(input: $input, condition: $condition) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
@@ -402,6 +404,7 @@ export const deleteShare = /* GraphQL */ `
   ) {
     deleteShare(input: $input, condition: $condition) {
       id
+      portfolioId
       securityId
       tradeId
       orderId
