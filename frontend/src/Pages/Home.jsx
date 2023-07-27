@@ -5,6 +5,7 @@ import OrderHistory from "../Containers/OrderHistory";
 import Portfolio from "../Containers/Portfolio";
 import NewPortfolio from "../Components/NewPortfolio";
 import { fetchPortfolioAPI } from "../api";
+import PortfolioValueChart from "../Components/PortfolioValueChart";
 
 const HomePage = () => {
   const [portfolio, setPortfolio] = useState(null);
@@ -28,8 +29,13 @@ const HomePage = () => {
           <div className="displayWatchlsit-container">
             <DisplayWatchlist portfolio={portfolio} />
           </div>
-          <div className="orderHistory-container">
-            <OrderHistory />
+          <div className="orderHistPortfoliochart-contianer">
+            <div className="orderHistory-container">
+              <OrderHistory />
+            </div>
+            <div className="portfolioChart-container">
+              <PortfolioValueChart portfolio={portfolio} />
+            </div>
           </div>
         </>
       ) : (

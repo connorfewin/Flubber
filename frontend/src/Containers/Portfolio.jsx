@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import PortfolioValue from "../Components/PortfolioValue";
+import PortfolioValueChart from "../Components/PortfolioValueChart";
 
-const Portfolio = ({portfolio}) => {
-  
+const Portfolio = ({ portfolio }) => {
   return (
-    <div className="Header">
+    <div>
       {portfolio ? (
-        <PortfolioValue
-          portfolio={portfolio}
-        />
+        <>
+          <PortfolioValue portfolio={portfolio} />
+        </>
       ) : (
         <h1>Connor's Portfolio</h1>
       )}

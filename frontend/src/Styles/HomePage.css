@@ -1,9 +1,9 @@
 /* HomePage.css */
 
-body{
-  min-width:1000px;        /* Suppose you want minimum width of 1000px */
-  width: auto !important;  /* Firefox will set width as auto */
-  width:1000px;            /* As IE6 ignores !important it will set width as 1000px; */
+body {
+  min-width: 1000px;        /* Suppose you want a minimum width of 1000px */
+  width: auto !important;   /* Firefox will set width as auto */
+  width: 1000px;            /* As IE6 ignores !important it will set width as 1000px; */
 }
 
 .homepage-container {
@@ -15,10 +15,27 @@ body{
   text-align: center;
 }
 
-.orderHistory-container {
-  min-width: 50%;
+.orderHistPortfoliochart-contianer {
+  /* No need to set max-width, since flex items will take up available space */
+  display: flex; /* Make this container a flex container */
 }
 
-.displayWatchlsit-container {
+.orderHistory-container {
+  flex: 1; /* This flex item will take up 50% of the available space */
+  /* Add other styling as needed */
+  height: 400px;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.portfolioChart-container {
+  flex: 1; /* This flex item will also take up 50% of the available space */
+  /* Add other styling as needed */
+  padding: 10px;
+  margin-left: 10px;
+  
+}
+
+.displayWatchlist-container {
   align-items: center;
 }
