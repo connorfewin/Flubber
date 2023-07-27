@@ -1,0 +1,26 @@
+.custom-tooltip {
+    background-color: rgba(255, 255, 255, 0.8); /* White background with 0.8 opacity */
+    border: 1px solid #ccc; /* Add a border around the div */
+    padding: 10px; /* Add some padding to create space between content and border */
+    border-radius: 5px; /* Add rounded corners for a nicer appearance */
+}
+
+.bankTransferLabel,
+.tradingProfitLabel,
+.initialValueLabel,
+.totalLabel {
+  margin: 0; /* Remove any default margins for the <p> elements */
+  /* Add any additional styles for the labels if needed */
+}
+
+.bankTransferLabel {
+    color: #EC8800;
+}
+
+.tradingProfitLabel {
+    color: #45C876;
+}
+
+.initialValueLabel {
+    color: #6D3CD8;
+}
