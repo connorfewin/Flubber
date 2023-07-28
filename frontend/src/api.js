@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { getSecurity, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
-import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio } from './graphql/mutations';
+import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio, createBankTransfer } from './graphql/mutations';
 
 const fetchPortfolioAPI = async () => {
     try {
@@ -235,6 +235,21 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
+  const createBankTransferAPI = async (portfolioId, type, amount) => {
+    try {
+        const newBankTransfer = {
+            portfolioId: portfolioId,
+            type: type,
+            amount: amount,
+        }
+        console.log("New Bank Transfer: ", newBankTransfer);
+        const bankTransferResponse = await API.graphql(graphqlOperation(createBankTransfer, {input : newBankTransfer}));
+        const bankTransfer = bankTransferResponse.data.createBankTransfer;
+        console.log("successfully created bank transfer: ", bankTransfer);
+    } catch (error) {
+        console.log("error in createBankTransferAPI: ", error);
+    }
+}
 
 const updatePortfolioCurrentValueAPI = async (id, newCurrentValue) => {
   console.log("portfolio: ", id);
@@ -556,6 +571,7 @@ export {
     createPortfolioAPI,
     createGoalAPI,  
     createWatchlistAPI,
+    createBankTransferAPI,
     updatePortfolioCurrentValueAPI,
     updateSecurityIsOpenAPI,  
     executeTrade,

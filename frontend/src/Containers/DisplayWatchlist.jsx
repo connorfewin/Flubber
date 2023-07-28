@@ -18,7 +18,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "rgba(255, 255, 255, 0.9)",
+  bgcolor: "rgba(240, 240, 240, 0.9)",
   border: "#DADADA",
   borderRadius: 4,
   boxShadow: 24,
@@ -171,7 +171,7 @@ const DisplayWatchlist = ({ portfolio }) => {
               <Fade in={openNewBankTransferModal}>
                 <div className="modal-container">
                   <Box sx={style}>
-                    <NewBankTransfer />
+                    <NewBankTransfer portfolio={portfolio} close={handleNewBankTransferClose}/>
                   </Box>
                 </div>
               </Fade>
