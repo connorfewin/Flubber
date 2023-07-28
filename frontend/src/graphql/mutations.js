@@ -53,10 +53,10 @@ export const createBankTransfer = /* GraphQL */ `
   ) {
     createBankTransfer(input: $input, condition: $condition) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }
@@ -68,10 +68,10 @@ export const updateBankTransfer = /* GraphQL */ `
   ) {
     updateBankTransfer(input: $input, condition: $condition) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }
@@ -83,10 +83,10 @@ export const deleteBankTransfer = /* GraphQL */ `
   ) {
     deleteBankTransfer(input: $input, condition: $condition) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }

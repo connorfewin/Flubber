@@ -49,10 +49,10 @@ export const onCreateBankTransfer = /* GraphQL */ `
   ) {
     onCreateBankTransfer(filter: $filter) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }
@@ -63,10 +63,10 @@ export const onUpdateBankTransfer = /* GraphQL */ `
   ) {
     onUpdateBankTransfer(filter: $filter) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }
@@ -77,10 +77,10 @@ export const onDeleteBankTransfer = /* GraphQL */ `
   ) {
     onDeleteBankTransfer(filter: $filter) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }

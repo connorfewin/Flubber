@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { getSecurity, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
+import { getSecurity, listBankTransfers, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
 import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio, createBankTransfer } from './graphql/mutations';
 
 const fetchPortfolioAPI = async () => {
@@ -144,6 +144,22 @@ const fetchClosedSharesByPortfolioIdAPI = async (portfolioId) => {
   }
 };
 
+const fetchBankTansfersByPortfolioAPI = async (portfolioId) => {
+  try {
+    const bankTransfersResponse = await API.graphql(
+      graphqlOperation(listBankTransfers, {
+        filter: {
+          portfolioId: { eq: portfolioId },
+        },
+      })
+    );
+    const bankTransfers = bankTransfersResponse.data.listBankTransfers.items;
+    console.log("Successfully fetched bank transfers by portfolioId");
+    return bankTransfers;
+  } catch (error) {
+    console.log("Error in fetchBankTansfersByPortfolioAPI", error)
+  }
+};
 const createPortfolioAPI = async (initialValue, createdAt) => {
     try {
         const newPortfolio = {
@@ -235,10 +251,11 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
-  const createBankTransferAPI = async (portfolioId, type, amount) => {
+  const createBankTransferAPI = async (portfolioId, createdAt, type, amount) => {
     try {
         const newBankTransfer = {
             portfolioId: portfolioId,
+            createdAt: createdAt,
             type: type,
             amount: amount,
         }
@@ -526,11 +543,13 @@ const calculateChartDataAPI = async (portfolioId, createdAt, initialValue) => {
   try {
     const data = [];
       const shares = await fetchClosedSharesByPortfolioIdAPI(portfolioId);
+      const bankTransfers = await fetchBankTansfersByPortfolioAPI(portfolioId);
       console.log("Shares: ", shares);
       const today = new Date();
       const datesBetween = getDatesBetween(createdAt, today);
       for (const date of datesBetween) {
         const dateMatchingClosedShares = shares.filter((share) => share.closedAt === date);
+        const dateMatchingBankTransfers = bankTransfers.filter((transfer) => transfer.createdAt === date);
         let tradeProfit = 0;
         let bankTransfer = 0
         if(data.length !== 0){
@@ -540,7 +559,12 @@ const calculateChartDataAPI = async (portfolioId, createdAt, initialValue) => {
         for(const item of dateMatchingClosedShares) {
           console.log(item.recognizedProfit)
           tradeProfit += item.recognizedProfit;
-          if (tradeProfit !== 0) console.log("MATCHING DATE: ", date);
+        }
+        for(const item of dateMatchingBankTransfers) {
+          console.log(item.amount)
+          if(item.type === "Deposit") bankTransfer += item.amount;
+          else bankTransfer -= item.amount;
+          
         }
         const newDataEntry = {
           date: date.toString(),

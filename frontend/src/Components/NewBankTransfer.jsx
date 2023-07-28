@@ -16,7 +16,7 @@ const NewBankTransfer = ({ portfolio, close }) => {
   const handleSubmit = async () => {
     if (date !== "" && toggleValue !== "" && amount !== "") {
       try {
-        await createBankTransferAPI(portfolio.id, toggleValue, amount);
+        await createBankTransferAPI(portfolio.id, date, toggleValue, amount);
         close();
       } catch (error) {
         console.log("Error in executeTrade:", error);

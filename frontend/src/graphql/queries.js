@@ -36,10 +36,10 @@ export const getBankTransfer = /* GraphQL */ `
   query GetBankTransfer($id: ID!) {
     getBankTransfer(id: $id) {
       id
+      createdAt
       portfolioId
       type
       amount
-      createdAt
       updatedAt
     }
   }
@@ -53,10 +53,10 @@ export const listBankTransfers = /* GraphQL */ `
     listBankTransfers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        createdAt
         portfolioId
         type
         amount
-        createdAt
         updatedAt
       }
       nextToken
