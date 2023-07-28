@@ -1,0 +1,28 @@
+.date {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  input[type="date"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  /* Style for the calendar icon on the date input (optional) */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }

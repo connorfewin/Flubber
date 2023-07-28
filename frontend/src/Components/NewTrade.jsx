@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../Styles/NewTrade.css";
 import OpenTradeType from "./OpenTradeType";
 import ClosedTradeType from "./ClosedTradeType";
-import DateInput from "./DateInnput";
+import DateInput from "./DateInput";
 import { executeTrade } from "../api";
 
 const NewTrade = (props) => {
@@ -40,7 +40,6 @@ const NewTrade = (props) => {
   return (
     <div>
       <h4>New Trade - {security.symbol}</h4>
-      <p>Id: {security.id}</p>
       {/* Render trade form */}
       <div className="trade-type-container">
       <DateInput date={date} setDate={setDate} /> 

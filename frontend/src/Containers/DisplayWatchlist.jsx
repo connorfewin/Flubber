@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 
 import { fetchWatchlistsAPI, fetchManySecuritiesAPI } from "../api";
 import { API, graphqlOperation } from "aws-amplify";
@@ -13,6 +10,7 @@ import { onUpdateSecurity } from "../graphql/subscriptions";
 import "../Styles/Watchlist.css";
 import Security from "../Components/Security";
 import NewWatchlist from "../Components/NewWatchlist";
+import NewBankTransfer from "../Components/NewBankTransfer";
 
 const style = {
   position: "absolute",
@@ -28,11 +26,11 @@ const style = {
 };
 
 const DisplayWatchlist = ({ portfolio }) => {
-  const navigate = useNavigate();
   const [watchlist, setWatchlist] = useState([]);
   const [securities, setSecurities] = useState([]);
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [openNewWatchlistModal, setOpenNewWatchlistModal] = useState(false);
+  const [openNewBankTransferModal, setNewBankTransferModal] = useState(false);
 
   // fetchWatchlists
   useEffect(() => {
@@ -98,10 +96,10 @@ const DisplayWatchlist = ({ portfolio }) => {
     setSelectedWatchlist(selectedWatchlist);
   };
 
-  const handleNewWatchlist = () => {
-    setOpenModal(true);
-  };
-  const handleClose = () => setOpenModal(false);
+  const handleNewWatchlist = () => setOpenNewWatchlistModal(true);
+  const handleNewBankTransfer = () => setNewBankTransferModal(true);
+  const handleNewWatchlistClose = () => setOpenNewWatchlistModal(false);
+  const handleNewBankTransferClose = () => setNewBankTransferModal(false);
 
   return (
     <div className="watchlist-container">
@@ -120,31 +118,65 @@ const DisplayWatchlist = ({ portfolio }) => {
             {watchlist.length === 1 && watchlist[0].name}
           </h2>
         )}
-        <div className="newWatchlist-modal">
-          <button className="new-watchlist-button" onClick={handleNewWatchlist}>
-            New Watchlist
-          </button>
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={openModal}
-            onClose={handleClose}
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-              backdrop: {
-                timeout: 500,
-              },
-            }}
-          >
-            <Fade in={openModal}>
-              <div className="modal-container">
-                <Box sx={style}>
-                  <NewWatchlist />
-                </Box>
-              </div>
-            </Fade>
-          </Modal>
+        <div className="controlPanel">
+          <div className="newWatchlist-modal">
+            <button
+              className="new-watchlist-button"
+              onClick={handleNewWatchlist}
+            >
+              + Watchlist
+            </button>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={openNewWatchlistModal}
+              onClose={handleNewWatchlistClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={openNewWatchlistModal}>
+                <div className="modal-container">
+                  <Box sx={style}>
+                    <NewWatchlist />
+                  </Box>
+                </div>
+              </Fade>
+            </Modal>
+          </div>
+          <div className="newBankTransfer-modal">
+            <button
+              className="newBankTransfer-button"
+              onClick={handleNewBankTransfer}
+            >
+              + Bank Transfer
+            </button>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={openNewBankTransferModal}
+              onClose={handleNewBankTransferClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={openNewBankTransferModal}>
+                <div className="modal-container">
+                  <Box sx={style}>
+                    <NewBankTransfer />
+                  </Box>
+                </div>
+              </Fade>
+            </Modal>
+          </div>
         </div>
       </div>
       {securities.length > 0 && (

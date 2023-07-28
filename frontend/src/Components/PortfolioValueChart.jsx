@@ -98,7 +98,7 @@ const PortfolioValueChart = ({ portfolio }) => {
       setData(chartDataResponse);
     };
     getChartData();
-  }, [portfolio.id, portfolio.createAt, portfolio.initialValue]);
+  }, [portfolio.id, portfolio.createdAt, portfolio.initialValue]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createPortfolioAPI } from "../api";
-import DateInput from "./DateInnput";
+import DateInput from "./DateInput";
 
 const NewPortfolio = () => {
     const [date, setDate] = useState('');
