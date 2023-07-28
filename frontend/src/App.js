@@ -13,7 +13,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/CreationZone" element={<NewWatchlist />} />
       </Routes>
     </Router>
     </div>
