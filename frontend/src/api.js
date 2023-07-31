@@ -62,6 +62,38 @@ const fetchAllSecuritiesAPI = async (portfolioId) => {
   } catch (error) {console.log("error in fetchAllSecuritiesAPI: ", error)}
 }
 
+const fetchOrCreateSecurityBySymbolAPI = async (portfolioId, symbol) => {
+  try {
+    const securityResponse = await API.graphql(
+      graphqlOperation(listSecurities, {
+        filter: {
+          portfolioId: { eq: portfolioId },
+          symbol: { eq: symbol},
+        },
+      })
+    );
+    const security = securityResponse["data"]["listSecurities"]["items"];
+    if(security.length > 1) throw new Error("More than one, ", symbol, " in portfolio");
+    else if(security.length === 1){
+      console.log("Successfully fetched security: ", security);
+      return security[0];
+    }
+    // create the security
+    else {
+      const newSecurity = {
+        symbol: symbol,
+        portfolioId: portfolioId,
+        isOpen: false,
+    }
+    const securityResponse = await API.graphql(graphqlOperation(createSecurity, {input : newSecurity}));
+    const security = securityResponse.data.createSecurity;
+    console.log("successfully created security: ", security);
+    return security;
+    }
+
+  } catch (error) {console.log("error in fetchSecurityBySymbolAPI: ", error)}
+}
+
 const fetchAllSecurityTradesAPI = async (securityId) => {
   try {
     const tradesResponse = await API.graphql(
@@ -251,7 +283,7 @@ const createWatchlistAPI = async (portfolioId, watchlistName, securities) => {
     }
   };
   
-  const createBankTransferAPI = async (portfolioId, createdAt, type, amount) => {
+const createBankTransferAPI = async (portfolioId, createdAt, type, amount) => {
     try {
         const newBankTransfer = {
             portfolioId: portfolioId,
@@ -546,7 +578,10 @@ const calculateChartDataAPI = async (portfolioId, createdAt, initialValue) => {
       const bankTransfers = await fetchBankTansfersByPortfolioAPI(portfolioId);
       console.log("Shares: ", shares);
       const today = new Date();
-      const datesBetween = getDatesBetween(createdAt, today);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      const datesBetween = getDatesBetween(createdAt, tomorrow);
       for (const date of datesBetween) {
         const dateMatchingClosedShares = shares.filter((share) => share.closedAt === date);
         const dateMatchingBankTransfers = bankTransfers.filter((transfer) => transfer.createdAt === date);
@@ -588,6 +623,7 @@ export {
     fetchWatchlistsAPI,
     fetchManySecuritiesAPI,
     fetchAllSecuritiesAPI,
+    fetchOrCreateSecurityBySymbolAPI,
     fetchAllSecurityTradesAPI,
     fetchClosedSecurityTradesAPI,
     fetchSharesByTradeIdAPI,

@@ -11,6 +11,7 @@ import "../Styles/Watchlist.css";
 import Security from "../Components/Security";
 import NewWatchlist from "../Components/NewWatchlist";
 import NewBankTransfer from "../Components/NewBankTransfer";
+import AddToWatchist from "../Components/AddToWatchlist";
 
 const style = {
   position: "absolute",
@@ -171,7 +172,10 @@ const DisplayWatchlist = ({ portfolio }) => {
               <Fade in={openNewBankTransferModal}>
                 <div className="modal-container">
                   <Box sx={style}>
-                    <NewBankTransfer portfolio={portfolio} close={handleNewBankTransferClose}/>
+                    <NewBankTransfer
+                      portfolio={portfolio}
+                      close={handleNewBankTransferClose}
+                    />
                   </Box>
                 </div>
               </Fade>
@@ -185,6 +189,11 @@ const DisplayWatchlist = ({ portfolio }) => {
             {securities.map((security) => (
               <Security key={security.id} security={security} />
             ))}
+            <AddToWatchist
+              portfolio={portfolio}
+              watchlist={selectedWatchlist}
+              securities={securities}
+            />
           </div>
         </div>
       )}

@@ -57,6 +57,7 @@
 
 .securities-list {
   padding-top: 30px;
+  display: flex;
 }
 
   .securities-row {
@@ -85,4 +86,23 @@
   .security-item-closed {
     background-color: #123868;
     color: white;
+  }
+
+  .addToWatchList-Button{
+    color: #c6c6c7;
+    font-size: 30px;
+    min-width: 100px;
+    min-height: 225px;
+    /* Set the width as desired */
+    margin-right: 10px;
+    /* Add desired margin-right value */
+    margin-bottom: 10px;
+    /* Add desired margin-bottom value */
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    /* Add desired box shadow value */
+  }
+
+  .addToWatchList-Button:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.35);
+    background-color: #e9e9e9;
   }
