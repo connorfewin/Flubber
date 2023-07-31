@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { getSecurity, listBankTransfers, listOrders, listPortfolios, listSecurities, listShares, listTrades, listWatchlists } from './graphql/queries';
-import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio, createBankTransfer } from './graphql/mutations';
+import { createGoal, createOrder, createPortfolio, createWatchlist, createSecurity, updateSecurity, createTrade, createShare, updateShare, updateTrade, updatePortfolio, createBankTransfer, updateWatchlist } from './graphql/mutations';
 
 const fetchPortfolioAPI = async () => {
     try {
@@ -326,6 +326,19 @@ const updateSecurityIsOpenAPI = async (id, isOpen) => {
   } catch (error) {console.log("error in updateSecurityIsOpen: ", error)}
 }
 
+const updateWatchlistSecuriesAPI = async (watchlistId, securityIds) => {
+  console.log("watchlist: ", watchlistId);
+  console.log("securityIds: ", securityIds);
+  try{
+    await API.graphql(
+      graphqlOperation(updateWatchlist, {
+        input: { id: watchlistId, securityIds: securityIds },
+      })
+    );
+    console.log("Successfully updated watchlists securityIds");
+  } catch (error) {console.log("error in updateWatchlistSecuriesAPI: ", error)}
+}
+
 const createNewTrade = async (security, selectedTradeType) => {
   const newTrade = {
     securityId: security.id,
@@ -634,6 +647,7 @@ export {
     createBankTransferAPI,
     updatePortfolioCurrentValueAPI,
     updateSecurityIsOpenAPI,  
+    updateWatchlistSecuriesAPI,
     executeTrade,
     calculateRecognizedProfitAPI,
     calculateChartDataAPI,

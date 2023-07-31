@@ -1,34 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import NewSecurity from "./NewSecurity";
+import { fetchOrCreateSecurityBySymbolAPI, updateWatchlistSecuriesAPI } from "../api";
 
 const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "rgba(240, 240, 240, 0.9)",
-    border: "#DADADA",
-    borderRadius: 4,
-    boxShadow: 24,
-    p: 4,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "rgba(240, 240, 240, 0.9)",
+  border: "#DADADA",
+  borderRadius: 4,
+  boxShadow: 24,
+  p: 4,
+};
+
+const AddToWatchlist = ({ portfolio, watchlist, setReloadSecurites }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [symbol, setSymbol] = useState("");
+
+  const handleSymbolChange = (event) => {
+    setSymbol(event.target.value);
   };
 
-const AddToWatchist = ({ porfoltio, watchlist, securities }) => {
-
-    const [openModal, setOpenModal] = useState(false);
-
-  useEffect(() => {
-    console.log("Selected Watchlist: ", watchlist);
-    console.log("Securities: ", securities);
-    console.log();
-  }, []);
-
-
+  const handleSubmit = async () => {
+    try {
+        const securityResponse = await fetchOrCreateSecurityBySymbolAPI(portfolio.id, symbol);
+        let newSecurities = [...watchlist?.securityIds, securityResponse.id];
+        await updateWatchlistSecuriesAPI(watchlist.id, newSecurities);
+        setReloadSecurites(true);
+        handleClose();
+      } catch (error) {
+        console.log("Error in AddToWatchlist:", error);
+      }
+  };
   const handleClick = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
@@ -53,9 +61,19 @@ const AddToWatchist = ({ porfoltio, watchlist, securities }) => {
         <Fade in={openModal}>
           <div className="modal-container">
             <Box sx={style}>
-              <NewSecurity
-                close={handleClose}
-              />
+              <h1>New Security</h1>
+              <div className="input-container">
+                <label htmlFor="symbol">Symbol:</label>
+                <input
+                  id="symbol"
+                  name="symbol"
+                  value={symbol}
+                  onChange={handleSymbolChange}
+                />
+              </div>
+              <button className="submit-button" onClick={handleSubmit}>
+                Submit
+              </button>
             </Box>
           </div>
         </Fade>
@@ -64,4 +82,4 @@ const AddToWatchist = ({ porfoltio, watchlist, securities }) => {
   );
 };
 
-export default AddToWatchist;
+export default AddToWatchlist;

@@ -48,7 +48,7 @@ const NewWatchlist = () => {
 
   return (
     <div className="createWatchlist">
-      <h2>Create Watchlist</h2>
+      <h1>Create Watchlist</h1>
       <input
         type="text"
         value={watchlistName}

@@ -11,7 +11,7 @@ import "../Styles/Watchlist.css";
 import Security from "../Components/Security";
 import NewWatchlist from "../Components/NewWatchlist";
 import NewBankTransfer from "../Components/NewBankTransfer";
-import AddToWatchist from "../Components/AddToWatchlist";
+import AddToWatchlist from "../Components/AddToWatchlist";
 
 const style = {
   position: "absolute",
@@ -32,6 +32,7 @@ const DisplayWatchlist = ({ portfolio }) => {
   const [selectedWatchlist, setSelectedWatchlist] = useState(null);
   const [openNewWatchlistModal, setOpenNewWatchlistModal] = useState(false);
   const [openNewBankTransferModal, setNewBankTransferModal] = useState(false);
+  const [reloadSecurites, setReloadSecurites] = useState(false);
 
   // fetchWatchlists
   useEffect(() => {
@@ -54,11 +55,12 @@ const DisplayWatchlist = ({ portfolio }) => {
           selectedWatchlist.securityIds
         );
         setSecurities(securitiesResponse);
+        setReloadSecurites(false);
       }
     };
 
     fetchSecurities();
-  }, [selectedWatchlist]);
+  }, [selectedWatchlist, reloadSecurites]);
 
   // onUpdateSecurity Subscription
   useEffect(() => {
@@ -189,10 +191,10 @@ const DisplayWatchlist = ({ portfolio }) => {
             {securities.map((security) => (
               <Security key={security.id} security={security} />
             ))}
-            <AddToWatchist
+            <AddToWatchlist
               portfolio={portfolio}
               watchlist={selectedWatchlist}
-              securities={securities}
+              setReloadSecurites={setReloadSecurites}
             />
           </div>
         </div>
