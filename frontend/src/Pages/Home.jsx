@@ -26,9 +26,6 @@ const HomePage = () => {
           <div className="portfolio-container">
             <Portfolio portfolio={portfolio} />
           </div>
-          <div className="displayWatchlsit-container">
-            <DisplayWatchlist portfolio={portfolio} />
-          </div>
           <div className="orderHistPortfoliochart-contianer">
             <div className="orderHistory-container">
               <OrderHistory />
@@ -36,6 +33,9 @@ const HomePage = () => {
             <div className="portfolioChart-container">
               <PortfolioValueChart portfolio={portfolio} />
             </div>
+          </div>
+          <div className="displayWatchlsit-container">
+            <DisplayWatchlist portfolio={portfolio} />
           </div>
         </>
       ) : (

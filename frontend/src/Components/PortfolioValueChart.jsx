@@ -90,6 +90,7 @@ const PortfolioValueChart = ({ portfolio }) => {
   // get the data for the area chart
   useEffect(() => {
     const getChartData = async () => {
+      console.log("YOOOO: $", portfolio.initialValue);
       const chartDataResponse = await calculateChartDataAPI(
         portfolio.id,
         portfolio.createdAt,
@@ -120,7 +121,7 @@ const PortfolioValueChart = ({ portfolio }) => {
           <YAxis
             type="number"
             allowDataOverflow={true}
-            domain={[8000, 12000]}
+            domain={[9000, 13500]}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
